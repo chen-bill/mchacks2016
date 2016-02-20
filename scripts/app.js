@@ -1,4 +1,4 @@
-angular.module('mainApp', [])
+angular.module('mainApp', ['ui.bootstrap'])
 .controller('mainController', ['$scope', '$http', function($scope, $http){
 	var tripAdvisorApiKey = '4F99833E8FE6438E9F753AE4E0257653';
 
@@ -106,4 +106,32 @@ angular.module('mainApp', [])
 	$scope.debug = function(){
 		console.log($scope.loadedOptions);
 	}
+
+	// ******************************************************************8
+	var _selected;
+	$scope.getLocation = function(val) {
+	return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
+	  params: {
+	    address: val,
+	    sensor: false
+	  }
+	}).then(function(response){
+	  return response.data.results.map(function(item){
+	    return item.formatted_address;
+	  });
+	});
+	};
+
+	$scope.ngModelOptionsSelected = function(value) {
+		if (arguments.length) {
+		  _selected = value;
+		} else {
+		  return _selected;
+		}
+	};
+
+	 $scope.onSelect = function ($item, $model, $label) {
+	    $scope.queryLocation($label);
+	};
+
 }])

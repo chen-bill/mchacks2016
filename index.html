@@ -12,6 +12,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="modules/angular/angular.js"></script>
+    <script src="node_modules/angular-animate/angular-animate.min.js"></script>
+    <script src="modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
 	<script src="scripts/app.js"></script>
 	<script src="scripts/controllers.js"></script>
 	<script src="scripts/services.js"></script>
@@ -20,12 +22,21 @@
 <div class="landing-page" ng-if="page == 'landingPage'">
     <div class="row center-container">
         <h1>Insert Pun Here</h1>
+
+
+        <input type="text" ng-model="asyncSelected" placeholder="Please enter your destination" uib-typeahead="address for address in getLocation($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noResults" typeahead-on-select="onSelect($item, $model, $label)" class="form-control">
+        <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+        <div ng-show="noResults">
+          <i class="glyphicon glyphicon-remove"></i> No Results Found
+        </div>
+
+        <!-- 
         <div class="input-group">
             <input type="text" class="form-control" ng-model="location" placeholder="Please enter your destination" id="location-text"/>
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" id="search-button" ng-click="queryLocation(location)">Search!</button>
             </span>
-        </div>
+        </div> -->
     </div>
 </div>
 <div class="select-page" ng-if="page == 'selectPage'">
