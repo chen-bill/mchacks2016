@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="mainApp">
 <head>
     <meta charset="UTF-8">
     <title>Insert Pun Here</title>
@@ -7,25 +7,28 @@
     <link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 <body>
-    <div class="landing-page">
-        <div class="row center-container">
-            <h1>Insert Pun Here</h1>
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Please enter your destinations" id="location-text"/>
+<div class="landing-page">
+    <div class="row center-container">
+        <h1>Insert Pun Here</h1>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Please enter your destinations" id="location-text"/>
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" id="search-button">Search!</button>
             </span>
-            </div>
         </div>
     </div>
-    <div class="select-page">
+</div>
+<div class="select-page">
 
-    </div>
-    <div class="result-page">
+</div>
+<div class="result-page">
 
-    </div>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </body>
+<script src="modules/angular/angular.js"></script>
+<script src="scripts/app.js"></script>
+<script src="scripts/controllers.js"></script>
+<script src="scripts/services.js"></script>
 </html>
