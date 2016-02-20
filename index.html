@@ -4,22 +4,23 @@
 	    <meta charset="UTF-8">
 	    <title>Insert Pun Here</title>
 	    <link rel="stylesheet" type="text/css" href="css/index.css">
+
+	    <script src="modules/angular/angular.js"></script>
+		<script src="scripts/app.js"></script>
+		<script src="scripts/controllers.js"></script>
+		<script src="scripts/services.js"></script>
 	</head>
 	<body ng-controller="mainController">
-		<div id="landingPage">
+		<div id="landingPage" ng-if="page == 'landingPage'">
 		    <h1>Not Shit Trip</h1>
-		    <textarea id="location-text">Insert Location Here</textarea>
-		    <button id="search-button">Search!</button>
+		    <input id="location-text" ng-model="location" placeholder="Insert Location Here"></input>
+		    <button id="search-button" ng-click="queryLocation(location)">Search!</button>
 		</div>
-		<div id="selectPage">
-
+		<div id="selectPage" ng-if="page == 'selectPage'">
+			<h1>Select</h1>
 		</div>
-		<div id="mapPage">
-			
+		<div id="mapPage" ng-if="page == 'mapPage'">
+			<h1>Map</h1>
 		</div>
 	</body>
-	<script src="modules/angular/angular.js"></script>
-	<script src="scripts/app.js"></script>
-	<script src="scripts/controllers.js"></script>
-	<script src="scripts/services.js"></script>
 </html>
