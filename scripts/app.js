@@ -10,12 +10,6 @@ angular.module('mainApp', ['ui.bootstrap'])
 		attractionsOptions: {},
 		restaurantOptions: {}
 	};
-	$scope.mapMap = {
-		toronto: {
-			latitude: "43.7000",
-			longitude: "-79.4000"
-		}
-	}
 
 	$scope.queryLocation = function(queryLocation){
 		console.log('queryinglocation');
@@ -69,6 +63,7 @@ angular.module('mainApp', ['ui.bootstrap'])
 	function parseData(type, httpResponse){
 		if(type == 'attractions'){
 			attractionsArray = httpResponse.data.data;
+			console.log(JSON.stringify(attractionsArray));
 			for(var key in attractionsArray){
 				$scope.loadedOptions.attractionsOptions[attractionsArray[key].name] = {
 					name: attractionsArray[key].name,
