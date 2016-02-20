@@ -5,13 +5,17 @@
     <title>Insert Pun Here</title>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/landing.css">
+    <link rel="stylesheet" type="text/css" href="css/select.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="landing-page">
     <div class="row center-container">
         <h1>Insert Pun Here</h1>
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Please enter your destinations" id="location-text"/>
+            <input type="text" class="form-control" placeholder="Please enter your destination" id="location-text"/>
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" id="search-button">Search!</button>
             </span>
@@ -19,16 +23,68 @@
     </div>
 </div>
 <div class="select-page">
-
+    <div class="sidebar">
+        <h3 id="destination-label">Toronto Itinerary</h3>
+        <ul class="list-group" id="selected-list">
+            <li class="list-group-item">test</li>
+            <li class="list-group-item">test2</li>
+        </ul>
+    </div>
+    <div class="select-content">
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#attractions-collapse">Attractions</a>
+                    </h4>
+                </div>
+                <div id="attractions-collapse" class="panel-collapse collapse">
+                    <div class="list-group" id="attractions-list">
+                        <a class="list-group-item active">test attraction</a>
+                        <a class="list-group-item">test attraction 2</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#restaurant-collapse">Restaurants</a>
+                    </h4>
+                </div>
+                <div id="restaurant-collapse" class="panel-collapse collapse">
+                    <div class="list-group" id="restaurant-list">
+                        <a class="list-group-item active">test</a>
+                        <a class="list-group-item">test 2</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#hotel-collapse">Hotels</a>
+                    </h4>
+                </div>
+                <div id="hotel-collapse" class="panel-collapse collapse">
+                    <div class="list-group" id="hotel-list">
+                        <a class="list-group-item active">test hotel</a>
+                        <a class="list-group-item">test hotel 2</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="result-page">
 
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-</body>
+
 <script src="modules/angular/angular.js"></script>
 <script src="scripts/app.js"></script>
 <script src="scripts/controllers.js"></script>
 <script src="scripts/services.js"></script>
+</body>
 </html>
