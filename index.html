@@ -16,14 +16,14 @@
 	<script src="scripts/controllers.js"></script>
 	<script src="scripts/services.js"></script>
 </head>
-<body>
+<body ng-controller="mainController">
 <div class="landing-page" ng-if="page == 'landingPage'">
     <div class="row center-container">
         <h1>Insert Pun Here</h1>
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Please enter your destination" id="location-text"/>
+            <input type="text" class="form-control" ng-model="location" placeholder="Please enter your destination" id="location-text"/>
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button" id="search-button">Search!</button>
+                <button class="btn btn-default" type="button" id="search-button" ng-click="queryLocation(location)">Search!</button>
             </span>
         </div>
     </div>
@@ -87,11 +87,5 @@
 <div class="result-page"  ng-if="page == 'resultPage'"> 
 
 </div>
-
-<script src="modules/angular/angular.js"></script>
-<script src="scripts/app.js"></script>
-<script src="scripts/controllers.js"></script>
-<script src="scripts/services.js"></script>
 </body>
->>>>>>> 81d3f8075ad552c148ae7c53eeac0cf3a1c58718
 </html>

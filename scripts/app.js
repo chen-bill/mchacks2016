@@ -18,6 +18,7 @@ angular.module('mainApp', [])
 	}
 
 	$scope.queryLocation = function(queryLocation){
+		console.log('queryinglocation');
 		$scope.page = 'selectPage';
 		$http.get('http://api.tripadvisor.com/api/partner/2.0/search/' + queryLocation + '?key=' + tripAdvisorApiKey + '&categories=geos')
 			.then(function(res){
