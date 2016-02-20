@@ -107,7 +107,10 @@ angular.module('mainApp', ['ui.bootstrap'])
 		console.log($scope.loadedOptions);
 	}
 
-	// ******************************************************************8
+	$scope.generateItinerary = function(queryLocation){
+		$scope.page = 'result-page';
+	}
+
 	var _selected;
 	$scope.getLocation = function(val) {
 	return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
