@@ -19,6 +19,11 @@
     margin-bottom: 40px;
 }
 
+.sidebar button {
+    text-align: center;
+    width: 100%;
+}
+
 .select-content {
     width: 80%;
     height: 100%;
