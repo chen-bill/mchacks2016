@@ -1,0 +1,12 @@
+body {
+    height: 100%;
+    width: 100%;
+}
+
+.center-container {
+    margin: 15% 10% 0 10%;
+}
+
+.center-container h1 {
+    text-align: center;
+}
