@@ -46,8 +46,7 @@
                 </div>
                 <div id="attractions-collapse" class="panel-collapse collapse">
                     <div class="list-group" id="attractions-list">
-                        <a class="list-group-item active">test attraction</a>
-                        <a class="list-group-item">test attraction 2</a>
+                        <a class="list-group-item" ng-repeat="attraction in loadedOptions.attractionsOptions" ng-click="">{{attraction.name}}</a>
                     </div>
                 </div>
             </div>
@@ -82,6 +81,10 @@
                 </div>
             </div>
         </div>
+
+        <button ng-click="debug()">
+            Debugg
+        </button>
     </div>
 </div>
 <div class="result-page"  ng-if="page == 'resultPage'"> 
