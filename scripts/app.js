@@ -4,7 +4,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 .controller('mainController', ['$scope', '$http', function($scope, $http){
 	var tripAdvisorApiKey = '4F99833E8FE6438E9F753AE4E0257653';
 	var googlePlacesApiKey = 'AIzaSyAahHAcSl2j4Yc8ZlhfB85Od1g_NdBGzf8';
-
+    var uberServerToken = '6YDZJ_ZzQzdVZLDasJBuAFTp0ulYus4ql8QSkFWw';
 	$scope.page = "landingPage";
 	$scope.location = "";
 	$scope.loading = false;
@@ -15,7 +15,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		restaurantOptions: {}
 	};
 	$scope.startLocationAddress = "";
-	
+
 	var startLocationData;
 	var endLocationData;
 
@@ -34,7 +34,6 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 	function queryLocationByAddress(address, callback){
 		var finalAddress = address.split(' ').join('+');
-		console.log(finalAddress);
 		$http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + finalAddress + '&key=' + googlePlacesApiKey)
 			.then(function(res){
 				callback(res.data.results);
@@ -72,11 +71,24 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 		function querySuccess(httpResponse){
 			parseData('restaurants', httpResponse);
-		};
+		}
 		function queryError(err){
 			console.log(err);
-		};
+		}
 	}
+
+    function queryEstimate(){
+        console.log("sending");
+        $http.get("http://api.uber.com/v1/estimates/price?start_latitude=37.625732&start_longitude=-122.377807&end_latitude=37.785114&end_longitude=-122.406677&server_token="
+            + uberServerToken).then(querySuccess, queryError);
+        function querySuccess(httpResponse){
+            var estimate = httpResponse.data.prices[0].estimate;
+            $('#fare-estimate').attr("placeholder", estimate + " from start to first destination.");
+        }
+        function queryError(err){
+            console.log(err);
+        }
+    }
 
 	function parseData(type, httpResponse){
 		if(type == 'attractions'){
@@ -104,7 +116,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 					longitude: restaurantsArray[key].longitude,
 					rating: restaurantsArray[key].rating,
 					address: restaurantsArray[key].address_obj,
-					ratingImage: restaurantsArray[key].rating_image_url, 
+					ratingImage: restaurantsArray[key].rating_image_url,
 					rankingData: restaurantsArray[key].ranking_data,
 					selected: false
 				}
@@ -311,6 +323,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 
 	function initialize() {
+        queryEstimate();
 	   var mapOptions = {
 	      center: new google.maps.LatLng(40.601203,-8.668173),
 	      zoom: 5,
@@ -338,17 +351,17 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 	   // this variable sets the map bounds according to markers position
 	   var bounds = new google.maps.LatLngBounds();
-	   
-	   // for loop traverses markersData array calling createMarker function for each marker 
+
+	   // for loop traverses markersData array calling createMarker function for each marker
 	   for (var i = 0; i < $scope.markersData.length; i++){
 
 	      var latlng = new google.maps.LatLng($scope.markersData[i].lat, $scope.markersData[i].lng);
 	      var name = $scope.markersData[i].name;
-	    
+
 	      createMarker(latlng, name);
 
 	      // marker position is added to bounds variable
-	      bounds.extend(latlng);  
+	      bounds.extend(latlng);
 	   }
 
 
@@ -364,14 +377,14 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	   });
 
 	   google.maps.event.addListener(marker, 'click', function() {
-	      
+
 	      // Creating the content to be inserted in the infowindow
 	      var iwContent = '<div id="iw_container">' +
 	            '<div class="iw_title">' + name + '</div>' +
 	         '<div class="iw_content">' + address1 + '<br />' +
 	         address2 + '<br />' +
 	         postalCode + '</div></div>';
-	      
+
 	      infoWindow.setContent(iwContent);
 
 	      infoWindow.open(map, marker);
