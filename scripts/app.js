@@ -15,15 +15,9 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		restaurantOptions: {}
 	};
 	$scope.startLocationAddress = "";
-
-<<<<<<< HEAD
-	function queryLocationByName(queriedLocation, callback){
-=======
-
 	$scope.markersData = [];
 
-	$scope.queryLocation = function(queryLocation){
->>>>>>> 46c4bf1ee5c644894ec46c5a2f97c81c0155296f
+	function queryLocationByName(queriedLocation, callback){
 		$scope.loading = true;
 		$http.get('http://api.tripadvisor.com/api/partner/2.0/search/' + queriedLocation + '?key=' + tripAdvisorApiKey + '&categories=geos')
 			.then(function(res){
@@ -203,20 +197,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 	$scope.generateItinerary = function(){
 		$scope.page = 'resultPage';
-<<<<<<< HEAD
-			queryLocationByAddress($scope.startLocationAddress);
-			generateRouteData($scope.selectedEvents, function(response){
-				var req = {
-					method: 'POST',
-					url: 'https://api.routific.com/v1/vrp',
-					headers: {
-					  	'Content-Type': 'application/json',
-					  	'Authorization': 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1MzEzZDZiYTNiMDBkMzA4MDA2ZTliOGEiLCJpYXQiOjEzOTM4MDkwODJ9.PR5qTHsqPogeIIe0NyH2oheaGR-SJXDsxPTcUQNq90E'
-					},
-					data: response
-				}
-=======
-		
+		queryLocationByAddress($scope.startLocationAddress);
 		generateRouteData($scope.selectedEvents, function(response){
 			var req = {
 				method: 'POST',
@@ -227,17 +208,9 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 				},
 				data: response
 			}
->>>>>>> 46c4bf1ee5c644894ec46c5a2f97c81c0155296f
 
-				$http(req).then(optimizationCallback, optimizationError);
+			$http(req).then(optimizationCallback, optimizationError);
 
-<<<<<<< HEAD
-				function optimizationCallback(response){
-					configureOptimizedData(response.data.solution.person1, function(result){
-						console.log(result);
-					});
-				}
-=======
 			function optimizationCallback(response){
 				configureOptimizedData(response.data.solution.person1, function(result){
 					for (var i = 0; i < result.length; i++) {
@@ -247,13 +220,12 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 							name: result[i].name
 						};
 					};
-					// console.log(result);
-					// console.log(markersData);
 					$scope.markersData = result;
+					markersData = result;
 					initialize();
 				});
 			}
->>>>>>> 46c4bf1ee5c644894ec46c5a2f97c81c0155296f
+
 
 				function optimizationError(error){
 					console.log('error in optimzation search: ' + JSON.stringify(error));
@@ -340,7 +312,6 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	   // Finally displayMarkers() function is called to begin the markers creation
 	   displayMarkers();
 	}
-	//google.maps.event.addDomListener(window, 'load', initialize);
 
 
 	// This function will iterate over markersData array
@@ -388,5 +359,15 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	      infoWindow.open(map, marker);
 	   });
 	}
+
+
+	//  // Pass the directions request to the directions service.
+ // 	var directionsService = new google.maps.DirectionsService();
+	// directionsService.route(request, function(response, status) {
+	// if (status == google.maps.DirectionsStatus.OK) {
+	// 	// Display the route on the map.
+	// 	directionsDisplay.setDirections(response);
+	// }
+	// });
 
 }])
