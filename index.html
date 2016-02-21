@@ -34,12 +34,11 @@
 </div>
 <div class="select-page" ng-if="page == 'selectPage'">
     <div class="sidebar">
-        <h3 id="destination-label">Toronto Itinerary</h3>
+        <h3 id="destination-label">{{location}} Itinerary</h3>
         <ul class="list-group" id="selected-list">
-            <li class="list-group-item">test</li>
-            <li class="list-group-item">test2</li>
+            <li class="list-group-item" ng-repeat="event in selectedEvents">{{event.name}}</li>
         </ul>
-        <button class="btn btn-primary">Generate Itinerary</button>
+        <button class="btn btn-primary" ng-click="generateItinerary()">Generate Itinerary</button>
     </div>
     <div class="select-content">
         <div class="panel-group">
@@ -183,7 +182,6 @@
                                 </ul>
                             </div>
                         </div>
-                        <!--<a class="list-group-item" ng-repeat="hotel in loadedOptions.hotelOptions" ng-click="">{{hotel.name}}</a>-->
                     </div>
                 </div>
             </div>
@@ -202,7 +200,7 @@
         </button>
     </div>
 </div>
-<div class="result-page"  ng-if="page == 'resultPage'"> 
+<div class="result-page" ng-if="page=='resultPage'"> 
     <h1>asdlkjasd</h1>
 </div>
 </body>

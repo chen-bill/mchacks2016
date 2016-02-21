@@ -1,10 +1,12 @@
+'use strict'
+
 angular.module('mainApp', ['ui.bootstrap'])
 .controller('mainController', ['$scope', '$http', function($scope, $http){
 	var tripAdvisorApiKey = '4F99833E8FE6438E9F753AE4E0257653';
 
 	$scope.page = "landingPage";
 	$scope.location = "";
-	$scope.selectedOptions = {};
+	$scope.selectedEvents = [];
 	$scope.loadedOptions = {
 		hotelOptions: {},
 		attractionsOptions: {},
@@ -12,12 +14,10 @@ angular.module('mainApp', ['ui.bootstrap'])
 	};
 
 	$scope.queryLocation = function(queryLocation){
-		console.log('queryinglocation');
 		$scope.page = 'selectPage';
 		$http.get('http://api.tripadvisor.com/api/partner/2.0/search/' + queryLocation + '?key=' + tripAdvisorApiKey + '&categories=geos')
 			.then(function(res){
 				var newLocationId = res.data.geos[0].location_id;
-				$scope.selectedOptions.locationId = res.data.geos[0].location_id;
 				queryAttractionsByLocationId(newLocationId);
 				queryHotelsByLocationId(newLocationId);
 				queryRestaurantsByLocationId(newLocationId);
@@ -30,7 +30,6 @@ angular.module('mainApp', ['ui.bootstrap'])
 		$http.get('http://api.tripadvisor.com/api/partner/2.0/location/' + locationId + '/attractions?key=' + tripAdvisorApiKey).then(querySuccess, queryError);
 
 		function querySuccess(httpResponse){
-			console.log("query sucess");
 			parseData('attractions', httpResponse);
 		};
 		function queryError(err){
@@ -62,47 +61,77 @@ angular.module('mainApp', ['ui.bootstrap'])
 
 	function parseData(type, httpResponse){
 		if(type == 'attractions'){
-			attractionsArray = httpResponse.data.data;
-			console.log(JSON.stringify(attractionsArray));
+			var attractionsArray = httpResponse.data.data;
 			for(var key in attractionsArray){
 				$scope.loadedOptions.attractionsOptions[attractionsArray[key].name] = {
 					name: attractionsArray[key].name,
 					latitude: attractionsArray[key].latitude,
 					longitude: attractionsArray[key].longitude,
 					rating: attractionsArray[key].rating,
-					address: attractionsArray[key].address_obj
+					address: attractionsArray[key].address_obj,
+					selected: false
 				}
 			}
 		} else if (type == 'restaurants'){
-			restaurantsArray = httpResponse.data.data;
+			var restaurantsArray = httpResponse.data.data;
 			for(var key in restaurantsArray){
 				$scope.loadedOptions.restaurantOptions[restaurantsArray[key].name] = {
 					name: restaurantsArray[key].name,
 					latitude: restaurantsArray[key].latitude,
 					longitude: restaurantsArray[key].longitude,
 					rating: restaurantsArray[key].rating,
-					address: restaurantsArray[key].address_obj
+					address: restaurantsArray[key].address_obj,
+					selected: false
 				}
 			}
 		} else {
-			hotelOptions = httpResponse.data.data;
+			var hotelOptions = httpResponse.data.data;
 			for(var key in hotelOptions){
 				$scope.loadedOptions.hotelOptions[hotelOptions[key].name] = {
 					name: hotelOptions[key].name,
 					latitude: hotelOptions[key].latitude,
 					longitude: hotelOptions[key].longitude,
 					rating: hotelOptions[key].rating,
-					address: hotelOptions[key].address_obj
+					address: hotelOptions[key].address_obj,
+					selected: false
 				}
 			}
 		}
 	}
 
-	$scope.debug = function(){
-		console.log($scope.loadedOptions);
+	$scope.generate = function(){
+		$scope.page = 'resultPage';
 	}
 
-	// ******************************************************************8
+	$scope.debug = function(){
+		console.log(JSON.stringify($scope.selectedEvents));
+	}
+
+	$scope.addEvent = function(event){
+		for(var categories in $scope.loadedOptions){
+			if($scope.loadedOptions[categories][event.name] && $scope.loadedOptions[categories][event.name].selected == false){
+				$scope.loadedOptions[categories][event.name].selected = true;
+				$scope.selectedEvents.push(event);
+			} else if ($scope.loadedOptions[categories][event.name]){
+				removeEvent(event);
+				$scope.loadedOptions[categories][event.name].selected = false;
+			}
+		}
+	}
+
+	function removeEvent(event){
+		for(var item in $scope.selectedEvents){
+			if($scope.selectedEvents[item].name == event.name){
+				console.log('here');
+				$scope.selectedEvents.splice(item, 1);
+			}
+		}
+	}
+
+	$scope.generateItinerary = function(queryLocation){
+		$scope.page = 'result-page';
+	}
+
 	var _selected;
 	$scope.getLocation = function(val) {
 	return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
@@ -126,6 +155,7 @@ angular.module('mainApp', ['ui.bootstrap'])
 	};
 
 	 $scope.onSelect = function ($item, $model, $label) {
+	 	$scope.location = $label;
 	    $scope.queryLocation($label);
 	};
 
