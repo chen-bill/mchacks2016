@@ -15,14 +15,12 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		restaurantOptions: {}
 	};
 	$scope.startLocationAddress = "";
-
+	
 	var startLocationData;
 	var endLocationData;
 
-	$scope.markersData = [];
 
-	var map;
-	var infoWindow;
+	$scope.markersData = [];
 
 	function queryLocationByName(queriedLocation, callback){
 		$scope.loading = true;
@@ -37,6 +35,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 	function queryLocationByAddress(address, callback){
 		var finalAddress = address.split(' ').join('+');
+		console.log(finalAddress);
 		$http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + finalAddress + '&key=' + googlePlacesApiKey)
 			.then(function(res){
 				callback(res.data.results);
@@ -208,15 +207,13 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 			startLocationData = {
 				"name": 'Start: ' + startLocation[0].formatted_address,
 				lat: parseFloat(startLocation[0].geometry.location.lat),
-				lng: parseFloat(startLocation[0].geometry.location.lng),
-				address: startLocation[0].formatted_address
+				lng: parseFloat(startLocation[0].geometry.location.lng)
 			}
 
 			endLocationData = {
 				"name": 'End: ' + startLocation[0].formatted_address,
 				lat: parseFloat(startLocation[0].geometry.location.lat),
-				lng: parseFloat(startLocation[0].geometry.location.lng),
-				address: startLocation[0].formatted_address
+				lng: parseFloat(startLocation[0].geometry.location.lng)
 			}
 
 			generateRouteData(startLocation, $scope.selectedEvents, function(response){
@@ -234,6 +231,13 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 				function optimizationCallback(response){
 					configureOptimizedData(response.data.solution.person1, function(result){
+						for (var i = 0; i < result.length; i++) {
+							result[i] = {
+								lat: parseFloat(result[i].latitude),
+								lng: parseFloat(result[i].longitude),
+								name: result[i].name
+							};
+						};
 						result.unshift(startLocationData);
 						result.push(endLocationData);
 						$scope.markersData = result;
@@ -256,26 +260,14 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 					if($scope.loadedOptions[categories][places].name == orderedData[key].location_id){
 						result.push({
 							name: orderedData[key].location_id,
-							lat: parseFloat($scope.loadedOptions[categories][places].latitude),
-							lng: parseFloat($scope.loadedOptions[categories][places].longitude),
-							address: $scope.loadedOptions[categories][places].address.address_string
+							latitude: $scope.loadedOptions[categories][places].latitude,
+							longitude: $scope.loadedOptions[categories][places].longitude
 						});
 					}
 				}
 			}
 		}
 		callback(result);
-	}
-
-	$scope.editItinerary = function(){
-		$scope.page = 'selectPage';
-
-		$scope.startLocationAddress = "";
-
-		startLocationData = '';
-		endLocationData = '';
-
-		$scope.markersData = [];
 	}
 
 	var _selected;
@@ -310,11 +302,30 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	};
 
 
+
+
+
+
+	var map;
+	var infoWindow;
+	 var directionsService = new google.maps.DirectionsService();
+var request = {
+      
+        // destination: destination,
+        // waypoints: waypoints,
+        // travelMode: mode,
+        // optimizeWaypoints: true,
+        // avoidHighways: false
+    };
+
+
 	function initialize() {
 	   var mapOptions = {
 	      center: new google.maps.LatLng(40.601203,-8.668173),
 	      zoom: 5,
-	      mapTypeId: 'roadmap',
+	      mapTypeId: 'roadmap'
+	     
+
 	   };
 
 	   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -344,9 +355,8 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 	      var latlng = new google.maps.LatLng($scope.markersData[i].lat, $scope.markersData[i].lng);
 	      var name = $scope.markersData[i].name;
-	      var address = $scope.markersData[i].address;
 	    
-	      createMarker(latlng, name, address);
+	      createMarker(latlng, name);
 
 	      // marker position is added to bounds variable
 	      bounds.extend(latlng);  
@@ -357,7 +367,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	}
 
 	// This function creates each marker and it sets their Info Window content
-	function createMarker(latlng, name, address){
+	function createMarker(latlng, name){
 	   var marker = new google.maps.Marker({
 	      map: map,
 	      position: latlng,
@@ -369,14 +379,37 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	      // Creating the content to be inserted in the infowindow
 	      var iwContent = '<div id="iw_container">' +
 	            '<div class="iw_title">' + name + '</div>' +
-	         '<div class="iw_content">' + address + '<br />' +
-	         '<br />';
+	         '<div class="iw_content">' + address1 + '<br />' +
+	         address2 + '<br />' +
+	         postalCode + '</div></div>';
 	      
 	      infoWindow.setContent(iwContent);
 
 	      infoWindow.open(map, marker);
 	   });
 	}
+directionsService.route(request, function(response, status) {
+      // if (status == google.maps.DirectionsStatus.OK) {
+      //   var points_text = "", format = "raw";
+      
+      //   response.routes[0].bounds.getCenter.lng
+      //   var nPoints = response.routes[0].overview_path.length;
+      //   for (var i = 0; i < nPoints; i++) { 
+      //       if ( format == "json" ) {
+      //           points_text += '\t' + serializeLatLng(response.routes[0].overview_path[i]) + (i < (nPoints - 1) ? ',\n' : '');
+      //       } else {
+      //           points_text += response.routes[0].overview_path[i].lat() + ',' + response.routes[0].overview_path[i].lng() + '\n';
+      //       }
+      //   }
+      //   if ( format == "json" ) {
+      //       points_text += '\n];'
+      //   }
+      //   var points_textarea=document.getElementById("points_textarea");
+      //   points_textarea.value = points_text;
+      //   //clearMarkers();
+        directionsDisplay.setDirections(response);
+     // }
+    });
 
 
 	//  // Pass the directions request to the directions service.
