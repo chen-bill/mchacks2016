@@ -288,7 +288,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		console.log("Init called");
 	   var mapOptions = {
 	      center: new google.maps.LatLng(40.601203,-8.668173),
-	      zoom: 7,
+	      zoom: 5,
 	      mapTypeId: 'roadmap',
 	   };
 
@@ -305,7 +305,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	   // Finally displayMarkers() function is called to begin the markers creation
 	   displayMarkers();
 	}
-	google.maps.event.addDomListener(window, 'load', initialize);
+	//google.maps.event.addDomListener(window, 'load', initialize);
 
 
 	// This function will iterate over markersData array

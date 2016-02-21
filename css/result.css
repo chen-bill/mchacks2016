@@ -4,14 +4,14 @@
 }
 
 .map {
-    width: 50%;
+    width: 70%;
     margin-left: 50%;
-    height: 750px;
+    height: 100%;
     position: fixed;
 }
 
 .itinerary {
-    width: 50%;
+    width: 30%;
     height: 100%;
     position: fixed;
 }
