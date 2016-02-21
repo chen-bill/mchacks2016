@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="css/landing.css">
     <link rel="stylesheet" type="text/css" href="css/select.css">
     <link rel="stylesheet" type="text/css" href="css/loading.css">
+    <link rel="stylesheet" type="text/css" href="css/result.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:400,400italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
@@ -19,6 +20,7 @@
 	<script src="scripts/app.js"></script>
 	<script src="scripts/controllers.js"></script>
 	<script src="scripts/services.js"></script>
+
 </head>
 <body ng-controller="mainController">
 <div class="landing-page" ng-if="page == 'landingPage'">
@@ -104,14 +106,16 @@
     </div>
 </div>
 <div class="result-page" ng-if="page=='resultPage'">
-    <div class="map"></div>
-    <div class="itinerary">
-        <h3>Itinerary</h3>
+    <div class="particles">
+        <div class="map"></div>
+        <div class="itinerary">
+            <h3>Itinerary</h3>
 
-        <ul class="list-group">
-            <li class="list-group-item"><span class="badge">2 hours</span>Stop 1</li>
-            <li class="list-group-item"><span class="badge">30 min</span>Stop 2</li>
-        </ul>
+            <ul class="list-group">
+                <li class="list-group-item"><span class="badge">2 hours</span>Stop 1</li>
+                <li class="list-group-item"><span class="badge">30 min</span>Stop 2</li>
+            </ul>
+        </div>
     </div>
 </div>
 <div class="loading-page" ng-if="page=='loading-page'">
