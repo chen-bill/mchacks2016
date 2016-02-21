@@ -6,6 +6,7 @@
 .map {
     width: 50%;
     margin-left: 50%;
+    height: 750px;
     position: fixed;
 }
 
@@ -21,4 +22,10 @@
 
 .itinerary li {
     margin-left: 1.5%;
+}
+
+.share-buttons {
+    display: table;
+    margin-left: 43%;
+    margin-right: auto;
 }
