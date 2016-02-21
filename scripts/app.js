@@ -84,7 +84,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
             + uberServerToken).then(querySuccess, queryError);
         function querySuccess(httpResponse){
             var estimate = httpResponse.data.prices[0].estimate;
-            $('#fare-estimate').attr("placeholder", estimate + " from start to first destination.");
+            $('#fare-estimate').attr("placeholder", estimate + " to Uber to first destination");
         }
         function queryError(err){
             console.log(err);
@@ -313,11 +313,6 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	    });
 	};
 
-
-
-
-
-
 	var map;
 	var infoWindow;
 	 var directionsService = new google.maps.DirectionsService();
@@ -401,10 +396,6 @@ var request = {
 	      infoWindow.open(map, marker);
 	   });
 	}
-
-    function backToSelect(){
-        $scope.page = 'selectPage';
-    }
 directionsService.route(request, function(response, status) {
       // if (status == google.maps.DirectionsStatus.OK) {
       //   var points_text = "", format = "raw";
