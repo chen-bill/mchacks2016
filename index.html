@@ -122,8 +122,9 @@
         </div>
         <div class="panel-body">
             <ul class="itinerary-list list-group">
-                <li class="list-group-item"><span class="badge">2 hours</span>Stop 1</li>
-                <li class="list-group-item"><span class="badge">30 min</span>Stop 2</li>
+<!--                 <li class="list-group-item"><span class="badge">2 hours</span>Stop 1</li>
+                <li class="list-group-item"><span class="badge">30 min</span>Stop 2</li> -->
+                <li ng-repeat="marker in markersData" class="list-group-item"><span class="badge">2 hours</span>{{marker.name}}</li>
             </ul>
         </div>
         <div class="btn-group share-buttons" role="group">

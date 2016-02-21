@@ -14,6 +14,28 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		restaurantOptions: {}
 	};
 
+
+	$scope.markersData = [
+	   {
+	  lat: 40.6386333,
+	      lng: -8.745,
+	      name: "1",
+
+	   },
+	   {
+	       lat: 40.59955,
+	      lng: -8.7498167,
+	      name: "2",
+
+	   },
+	   {
+	     lat: 40.6247167,
+	      lng: -8.7129167,
+	      name: "3",
+	 
+	   } 
+	];
+
 	$scope.queryLocation = function(queryLocation){
 		$scope.loading = true;
 		$http.get('http://api.tripadvisor.com/api/partner/2.0/search/' + queryLocation + '?key=' + tripAdvisorApiKey + '&categories=geos')
@@ -182,7 +204,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 	$scope.generateItinerary = function(queryLocation){
 		$scope.page = 'resultPage';
-		initialize();
+		
 		generateRouteData($scope.selectedEvents, function(response){
 			var req = {
 				method: 'POST',
@@ -198,7 +220,17 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 			function optimizationCallback(response){
 				configureOptimizedData(response.data.solution.person1, function(result){
-					console.log(result);
+					for (var i = 0; i < result.length; i++) {
+						result[i] = {
+							lat: parseFloat(result[i].latitude),
+							lng: parseFloat(result[i].longitude),
+							name: result[i].name
+						};
+					};
+					// console.log(result);
+					// console.log(markersData);
+					$scope.markersData = result;
+					initialize();
 				});
 			}
 
@@ -262,28 +294,6 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	var infoWindow;
 
 
-	var markersData = [
-	   {
-	  lat: 40.6386333,
-	      lng: -8.745,
-	      name: "1",
-
-	   },
-	   {
-	       lat: 40.59955,
-	      lng: -8.7498167,
-	      name: "2",
-
-	   },
-	   {
-	     lat: 40.6247167,
-	      lng: -8.7129167,
-	      name: "3",
-	 
-	   } 
-	];
-
-
 	function initialize() {
 		console.log("Init called");
 	   var mapOptions = {
@@ -316,10 +326,10 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	   var bounds = new google.maps.LatLngBounds();
 	   
 	   // for loop traverses markersData array calling createMarker function for each marker 
-	   for (var i = 0; i < markersData.length; i++){
+	   for (var i = 0; i < $scope.markersData.length; i++){
 
-	      var latlng = new google.maps.LatLng(markersData[i].lat, markersData[i].lng);
-	      var name = markersData[i].name;
+	      var latlng = new google.maps.LatLng($scope.markersData[i].lat, $scope.markersData[i].lng);
+	      var name = $scope.markersData[i].name;
 	    
 	      createMarker(latlng, name);
 
