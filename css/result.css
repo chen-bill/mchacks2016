@@ -1,0 +1,37 @@
+body {
+    margin: 0 0 0 0;
+    height: 100%;
+    width: 100%;
+}
+
+.result-page {
+    height: 100%;
+    width: 100%;
+    background-color: #faf0e6;
+    padding-top: 2%;
+}
+
+.map {
+    width: 750px;
+    height: 500px;
+    background-color: blue;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.social-list {
+    text-align: center;
+}
+
+.social-list li{
+    display: inline;
+    padding: 1% 1% 1% 1%;
+}
+
+.itinerary {
+    padding: 0 2% 0 2%;
+}
+
+.itinerary h3 {
+    text-align: center;
+}
