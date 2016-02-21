@@ -35,6 +35,7 @@
     padding-top: 5px;
     padding-bottom: 5px;
     color: white;
+    cursor: pointer;
 }
 
 .sidebar button {
@@ -97,8 +98,8 @@
     border: none;
     box-shadow: none;
     height: 30px;
-    margin-bottom: 5%;
     padding: 3px;
+    margin: 0 0 5% 0;
 }
 
 

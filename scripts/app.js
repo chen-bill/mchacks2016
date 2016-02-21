@@ -4,7 +4,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 .controller('mainController', ['$scope', '$http', function($scope, $http){
 	var tripAdvisorApiKey = '4F99833E8FE6438E9F753AE4E0257653';
 	var googlePlacesApiKey = 'AIzaSyAahHAcSl2j4Yc8ZlhfB85Od1g_NdBGzf8';
-
+    var uberServerToken = '6YDZJ_ZzQzdVZLDasJBuAFTp0ulYus4ql8QSkFWw';
 	$scope.page = "landingPage";
 	$scope.location = "";
 	$scope.loading = false;
@@ -15,7 +15,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		restaurantOptions: {}
 	};
 	$scope.startLocationAddress = "";
-	
+
 	var startLocationData;
 	var endLocationData;
 
@@ -39,7 +39,6 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 	function queryLocationByAddress(address, callback){
 		var finalAddress = address.split(' ').join('+');
-		console.log(finalAddress);
 		$http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + finalAddress + '&key=' + googlePlacesApiKey)
 			.then(function(res){
 				callback(res.data.results);
@@ -77,11 +76,24 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 		function querySuccess(httpResponse){
 			parseData('restaurants', httpResponse);
-		};
+		}
 		function queryError(err){
 			console.log(err);
-		};
+		}
 	}
+
+    function queryEstimate(){
+        console.log("sending");
+        $http.get("http://api.uber.com/v1/estimates/price?start_latitude=" + $scope.markersData[0].lat + "+ &start_longitude=" + $scope.markersData[0].lng + "&end_latitude=" + $scope.markersData[1].lat + "&end_longitude=" + $scope.markersData[1].lng + "&server_token="
+            + uberServerToken).then(querySuccess, queryError);
+        function querySuccess(httpResponse){
+            var estimate = httpResponse.data.prices[0].estimate;
+            $('#fare-estimate').attr("placeholder", estimate + " to Uber to first destination");
+        }
+        function queryError(err){
+            console.log(err);
+        }
+    }
 
 	function parseData(type, httpResponse){
 		if(type == 'attractions'){
@@ -109,7 +121,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 					longitude: restaurantsArray[key].longitude,
 					rating: restaurantsArray[key].rating,
 					address: restaurantsArray[key].address_obj,
-					ratingImage: restaurantsArray[key].rating_image_url, 
+					ratingImage: restaurantsArray[key].rating_image_url,
 					rankingData: restaurantsArray[key].ranking_data,
 					selected: false
 				}
