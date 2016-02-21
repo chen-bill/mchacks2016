@@ -226,50 +226,51 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 			startLocationData = {
 				"name": 'Start: ' + startLocation[0].formatted_address,
-				lat: parseFloat(startLocation[0].geometry.location.lat),
-				lng: parseFloat(startLocation[0].geometry.location.lng)
+				latitude: parseFloat(startLocation[0].geometry.location.lat),
+				longitude: parseFloat(startLocation[0].geometry.location.lng)
 			}
 
-			endLocationData = {
-				"name": 'End: ' + startLocation[0].formatted_address,
-				lat: parseFloat(startLocation[0].geometry.location.lat),
-				lng: parseFloat(startLocation[0].geometry.location.lng)
-			}
 
-			generateRouteData(startLocation, $scope.selectedEvents, function(response){
-				var req = {
-					method: 'POST',
-					url: 'https://api.routific.com/v1/vrp',
-					headers: {
-					  	'Content-Type': 'application/json',
-					  	'Authorization': 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1MzEzZDZiYTNiMDBkMzA4MDA2ZTliOGEiLCJpYXQiOjEzOTM4MDkwODJ9.PR5qTHsqPogeIIe0NyH2oheaGR-SJXDsxPTcUQNq90E'
-					},
-					data: response
-				}
+			// phased out routific api so that it can still be used after api key expires
 
-			$http(req).then(optimizationCallback, optimizationError);
-				function optimizationCallback(response){
-					console.log(response);
-					configureOptimizedData(response.data.solution.person1, function(result){
-						for (var i = 0; i < result.length; i++) {
-							result[i] = {
-								lat: parseFloat(result[i].latitude),
-								lng: parseFloat(result[i].longitude),
-								name: result[i].name
-							};
-						};
-						result.unshift(startLocationData);
-						result.push(endLocationData);
+			// generateRouteData(startLocation, $scope.selectedEvents, function(response){
+			// 	var req = {
+			// 		method: 'POST',
+			// 		url: 'https://api.routific.com/v1/vrp',
+			// 		headers: {
+			// 		  	'Content-Type': 'application/json',
+			// 		  	'Authorization': 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1MzEzZDZiYTNiMDBkMzA4MDA2ZTliOGEiLCJpYXQiOjEzOTM4MDkwODJ9.PR5qTHsqPogeIIe0NyH2oheaGR-SJXDsxPTcUQNq90E'
+			// 		},
+			// 		data: response
+			// 	}
 
-						$scope.markersData = result;
-						initialize();
-					});
-				}
+			// 	$http(req).then(optimizationCallback, optimizationError);
+			// 		function optimizationCallback(response){
+			// 			console.log(response);
+			// 			configureOptimizedData(response.data.solution.person1, function(result){
+			// 				for (var i = 0; i < result.length; i++) {
+			// 					result[i] = {
+			// 						lat: parseFloat(result[i].latitude),
+			// 						lng: parseFloat(result[i].longitude),
+			// 						name: result[i].name
+			// 					};
+			// 				};
+			// 				result.unshift(startLocationData);
+			// 				result.push(endLocationData);
 
-				function optimizationError(error){
-					console.log('error in optimzation search: ' + JSON.stringify(error));
-				}
-			});
+			// 				$scope.markersData = result;
+			// 				initialize();
+			// 			});
+			// 		}
+
+			// 		function optimizationError(error){
+			// 			console.log('error in optimzation search: ' + JSON.stringify(error));
+			// 		}
+			// });
+
+			console.log($scope.selectedEvents);
+			$scope.markersData = $scope.selectedEvents;
+			initialize();
 		});
 	}
 
@@ -348,16 +349,22 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	function calcRoute() {
 	    var waypointsData = [];
 	    for(var events in $scope.markersData){
+	    	console.log($scope.markersData[events].latitude, $scope.markersData[events].longitude);
 	    	waypointsData.push({
-	    		location: new google.maps.LatLng($scope.markersData[events].lat, $scope.markersData[events].lng),
+	    		location: new google.maps.LatLng($scope.markersData[events].latitude, $scope.markersData[events].longitude),
 	    		stopover: false
 	    	})
 	    }
 
+	    console.log(waypointsData);
+
+	    console.log(startLocationData.latitude, startLocationData.longitude);
+
 	    var request = {
-	        origin: new google.maps.LatLng(startLocationData.lat,startLocationData.lng),
-	        destination: new google.maps.LatLng(startLocationData.lat,startLocationData.lng),
+	        origin: new google.maps.LatLng(startLocationData.latitude, startLocationData.longitude),
+	        destination: new google.maps.LatLng(startLocationData.latitude, startLocationData.longitude),
 	        waypoints: waypointsData,
+	        optimizeWaypoints: true,
 	        travelMode: google.maps.DirectionsTravelMode.WALKING
 	    };
 
