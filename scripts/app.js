@@ -16,7 +16,33 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	};
 	$scope.startLocationAddress = "";
 
+<<<<<<< HEAD
 	function queryLocationByName(queriedLocation, callback){
+=======
+
+	$scope.markersData = [
+	   {
+	  lat: 40.6386333,
+	      lng: -8.745,
+	      name: "1",
+
+	   },
+	   {
+	       lat: 40.59955,
+	      lng: -8.7498167,
+	      name: "2",
+
+	   },
+	   {
+	     lat: 40.6247167,
+	      lng: -8.7129167,
+	      name: "3",
+	 
+	   } 
+	];
+
+	$scope.queryLocation = function(queryLocation){
+>>>>>>> 46c4bf1ee5c644894ec46c5a2f97c81c0155296f
 		$scope.loading = true;
 		$http.get('http://api.tripadvisor.com/api/partner/2.0/search/' + queriedLocation + '?key=' + tripAdvisorApiKey + '&categories=geos')
 			.then(function(res){
@@ -196,6 +222,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 	$scope.generateItinerary = function(){
 		$scope.page = 'resultPage';
+<<<<<<< HEAD
 			queryLocationByAddress($scope.startLocationAddress);
 			generateRouteData($scope.selectedEvents, function(response){
 				var req = {
@@ -207,14 +234,45 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 					},
 					data: response
 				}
+=======
+		
+		generateRouteData($scope.selectedEvents, function(response){
+			var req = {
+				method: 'POST',
+				url: 'https://api.routific.com/v1/vrp',
+				headers: {
+				  	'Content-Type': 'application/json',
+				  	'Authorization': 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1MzEzZDZiYTNiMDBkMzA4MDA2ZTliOGEiLCJpYXQiOjEzOTM4MDkwODJ9.PR5qTHsqPogeIIe0NyH2oheaGR-SJXDsxPTcUQNq90E'
+				},
+				data: response
+			}
+>>>>>>> 46c4bf1ee5c644894ec46c5a2f97c81c0155296f
 
 				$http(req).then(optimizationCallback, optimizationError);
 
+<<<<<<< HEAD
 				function optimizationCallback(response){
 					configureOptimizedData(response.data.solution.person1, function(result){
 						console.log(result);
 					});
 				}
+=======
+			function optimizationCallback(response){
+				configureOptimizedData(response.data.solution.person1, function(result){
+					for (var i = 0; i < result.length; i++) {
+						result[i] = {
+							lat: parseFloat(result[i].latitude),
+							lng: parseFloat(result[i].longitude),
+							name: result[i].name
+						};
+					};
+					// console.log(result);
+					// console.log(markersData);
+					$scope.markersData = result;
+					initialize();
+				});
+			}
+>>>>>>> 46c4bf1ee5c644894ec46c5a2f97c81c0155296f
 
 				function optimizationError(error){
 					console.log('error in optimzation search: ' + JSON.stringify(error));
@@ -270,4 +328,84 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 			queryRestaurantsByLocationId(newLocationId);
 	    });
 	};
+
+
+
+
+
+
+	var map;
+	var infoWindow;
+
+
+	function initialize() {
+		console.log("Init called");
+	   var mapOptions = {
+	      center: new google.maps.LatLng(40.601203,-8.668173),
+	      zoom: 5,
+	      mapTypeId: 'roadmap',
+	   };
+
+	   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+	   // a new Info Window is created
+	   infoWindow = new google.maps.InfoWindow();
+
+	   // Event that closes the Info Window with a click on the map
+	   google.maps.event.addListener(map, 'click', function() {
+	      infoWindow.close();
+	   });
+
+	   // Finally displayMarkers() function is called to begin the markers creation
+	   displayMarkers();
+	}
+	//google.maps.event.addDomListener(window, 'load', initialize);
+
+
+	// This function will iterate over markersData array
+	// creating markers with createMarker function
+	function displayMarkers(){
+
+	   // this variable sets the map bounds according to markers position
+	   var bounds = new google.maps.LatLngBounds();
+	   
+	   // for loop traverses markersData array calling createMarker function for each marker 
+	   for (var i = 0; i < $scope.markersData.length; i++){
+
+	      var latlng = new google.maps.LatLng($scope.markersData[i].lat, $scope.markersData[i].lng);
+	      var name = $scope.markersData[i].name;
+	    
+	      createMarker(latlng, name);
+
+	      // marker position is added to bounds variable
+	      bounds.extend(latlng);  
+	   }
+
+
+	   map.fitBounds(bounds);
+	}
+
+	// This function creates each marker and it sets their Info Window content
+	function createMarker(latlng, name){
+	   var marker = new google.maps.Marker({
+	      map: map,
+	      position: latlng,
+	      title: name
+	   });
+
+	   google.maps.event.addListener(marker, 'click', function() {
+	      
+	      // Creating the content to be inserted in the infowindow
+	      var iwContent = '<div id="iw_container">' +
+	            '<div class="iw_title">' + name + '</div>' +
+	         '<div class="iw_content">' + address1 + '<br />' +
+	         address2 + '<br />' +
+	         postalCode + '</div></div>';
+	      
+	      infoWindow.setContent(iwContent);
+
+	      infoWindow.open(map, marker);
+	   });
+	}
+
 }])
