@@ -15,26 +15,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	};
 
 
-	$scope.markersData = [
-	   {
-	  lat: 40.6386333,
-	      lng: -8.745,
-	      name: "1",
-
-	   },
-	   {
-	       lat: 40.59955,
-	      lng: -8.7498167,
-	      name: "2",
-
-	   },
-	   {
-	     lat: 40.6247167,
-	      lng: -8.7129167,
-	      name: "3",
-	 
-	   } 
-	];
+	$scope.markersData = [];
 
 	$scope.queryLocation = function(queryLocation){
 		$scope.loading = true;
