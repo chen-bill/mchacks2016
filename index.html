@@ -44,10 +44,11 @@
 <div class="select-page" ng-if="page == 'selectPage'">
     <div class="sidebar">
         <h3 id="destination-label">{{location}} Itinerary</h3>
-        <ul class="list-group" id="selected-list">
-            <li class="list-group-item" ng-repeat="event in selectedEvents">{{event.name}}</li>
-        </ul>
         <button class="btn btn-primary" ng-click="generateItinerary()">Generate Itinerary</button>
+        <ul id="selected-list">
+            <li ng-repeat="event in selectedEvents">{{event.name}}</li>
+        </ul>
+        
     </div>
     <div class="select-content">
         <div class="panel-group">
@@ -102,6 +103,7 @@
     <div class="map"></div>
     <div class="itinerary">
         <h3>Itinerary</h3>
+
         <ul class="list-group">
             <li class="list-group-item"><span class="badge">2 hours</span>Stop 1</li>
             <li class="list-group-item"><span class="badge">30 min</span>Stop 2</li>

@@ -187,7 +187,9 @@ angular.module('mainApp', ['ui.bootstrap'])
 			$http(req).then(optimizationCallback, optimizationError);
 
 			function optimizationCallback(response){
-				configureOptimizedData(response.data.solution.person1);
+				configureOptimizedData(response.data.solution.person1, function(result){
+					console.log(result);
+				});
 			}
 
 			function optimizationError(error){
@@ -196,8 +198,7 @@ angular.module('mainApp', ['ui.bootstrap'])
 		});
 	}
 
-	function configureOptimizedData (orderedData){
-		console.log(orderedData);
+	function configureOptimizedData (orderedData, callback){
 		var result = [];
 		for(var key in orderedData){
 			for(var categories in $scope.loadedOptions){
@@ -212,7 +213,7 @@ angular.module('mainApp', ['ui.bootstrap'])
 				}
 			}
 		}
-		console.log(result);
+		callback(result);
 	}
 
 	var _selected;
@@ -241,5 +242,4 @@ angular.module('mainApp', ['ui.bootstrap'])
 	 	$scope.location = $label;
 	    $scope.queryLocation($label);
 	};
-
 }])

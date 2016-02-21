@@ -13,41 +13,55 @@
     position: fixed;
     width: 30%;
     height: 100%;
-    padding: 1% 2% 0 2%;
-    background-color: rgba(231,231,231,0.6);
+    padding: 0;
+    background-color: rgba(0,0,0,0.90);
 }
 
 .sidebar h3 {
     text-align: center;
     font-family: 'Josefin Sans', sans-serif;
-    margin-bottom: 40px;
-    color: black;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.sidebar ul{
+    margin-top: 10px;
+    list-style: none;
+    padding-left: 15px;
+    overflow: auto;
+}
+
+.sidebar ul li {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: white;
 }
 
 .sidebar button {
     text-align: center;
     width: 100%;
+    height: 50px;
+    border-radius: 0;
 }
 
 .select-content {
     width: 70%;
     height: 100%;
     margin-left: 30%;
-    padding: 2% 1% 0 1%;
 }
 
 .select-list {
     padding: 0.5% 1% 0.5% 1%;
 }
 
-<<<<<<< Updated upstream
 .panel-body .row{
     background-color: rgba(255,255,255,0);
 }
 
-.card {
-    background-color: white;
-=======
+.panel-group{
+    margin-bottom: 0;
+}
+
 .attraction-image, .restaurant-image, .hotel-image {
     display: block;
     margin: auto;
@@ -61,5 +75,3 @@
     margin-left: 5px;
     background: white;
     height: 300px;
->>>>>>> Stashed changes
-}
