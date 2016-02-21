@@ -401,6 +401,10 @@ var request = {
 	      infoWindow.open(map, marker);
 	   });
 	}
+
+    function backToSelect(){
+        $scope.page = 'selectPage';
+    }
 directionsService.route(request, function(response, status) {
       // if (status == google.maps.DirectionsStatus.OK) {
       //   var points_text = "", format = "raw";
