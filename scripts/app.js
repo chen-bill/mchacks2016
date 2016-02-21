@@ -98,6 +98,104 @@ angular.module('mainApp', ['ui.bootstrap'])
 			}
 		}
 	}
+	var mockItinerary = [
+	  {
+	    "name": "Toronto Bicycle Tours",
+	    "latitude": "43.6545",
+	    "longitude": "-79.39039",
+	    "rating": "5.0",
+	    "address": {
+	      "street1": "275 Dundas Street West",
+	      "street2": "",
+	      "city": "Toronto",
+	      "state": "Ontario",
+	      "country": "Canada",
+	      "postalcode": "M5T 3K1",
+	      "address_string": "275 Dundas Street West, Toronto, Ontario M5T 3K1 Canada"
+	    },
+	    "selected": false,
+	    "$$hashKey": "object:100"
+	  },
+	  {
+	    "name": "Edge Walk at the CN Tower",
+	    "latitude": "43.643883",
+	    "longitude": "-79.38902",
+	    "rating": "5.0",
+	    "address": {
+	      "street1": "301 Front Street West",
+	      "street2": "",
+	      "city": "Toronto",
+	      "state": "Ontario",
+	      "country": "Canada",
+	      "postalcode": "M5V 2T6 ",
+	      "address_string": "301 Front Street West, Toronto, Ontario M5V 2T6 Canada"
+	    },
+	    "selected": false,
+	    "$$hashKey": "object:102"
+	  },
+	  {
+	    "name": "St. Lawrence Market",
+	    "latitude": "43.64921",
+	    "longitude": "-79.371956",
+	    "rating": "4.5",
+	    "address": {
+	      "street1": "92-95 Front St. E.",
+	      "street2": "",
+	      "city": "Toronto",
+	      "state": "Ontario",
+	      "country": "Canada",
+	      "postalcode": "M5E 1C3",
+	      "address_string": "92-95 Front St. E., Toronto, Ontario M5E 1C3 Canada"
+	    },
+	    "selected": false,
+	    "$$hashKey": "object:104"
+	  }
+	];
+
+	function generateRouteData(itinerary) {
+		if (itinerary.length == 0)
+			return null;
+
+		var result = {};
+		result.visits = {
+
+		}
+		for (var i = 0; i < itinerary.length; i++) {
+			var itineraryName = itinerary[i].name;
+			result.visits[itineraryName] = {
+				"location": {
+					"name": itinerary[i].address.street1,
+					"lat": itinerary[i].latitude,
+					"lng": itinerary[i].longitude,
+				},
+				"duration": 1
+			};
+		};
+		//todo: start locaton??? get from user?
+		result.fleet = {
+			"person1": {
+				"start_location": {
+					"id": "hotel",
+					"name": "insert address here",
+					"lat": itinerary[0].latitude,
+					"lng": itinerary[0].longitude
+				},
+				"end_location": {
+					"id": "hotel",
+					"name": "insert address here",
+					"lat": itinerary[0].latitude,
+					"lng": itinerary[0].longitude
+				},
+				"shift_start": "0:00",
+				"shift_end": "23:59"
+			}
+		}
+		console.log(result);
+		return result;
+	};
+
+	// console.log(mockItinerary);
+	// generateRouteData(mockItinerary);
 
 	$scope.generate = function(){
 		$scope.page = 'resultPage';
