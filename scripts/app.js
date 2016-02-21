@@ -15,11 +15,14 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		restaurantOptions: {}
 	};
 	$scope.startLocationAddress = "";
-	
+
 	var startLocationData;
 	var endLocationData;
 
 	$scope.markersData = [];
+
+	var map;
+	var infoWindow;
 
 	function queryLocationByName(queriedLocation, callback){
 		$scope.loading = true;
@@ -34,7 +37,6 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 	function queryLocationByAddress(address, callback){
 		var finalAddress = address.split(' ').join('+');
-		console.log(finalAddress);
 		$http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + finalAddress + '&key=' + googlePlacesApiKey)
 			.then(function(res){
 				callback(res.data.results);
@@ -206,13 +208,15 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 			startLocationData = {
 				"name": 'Start: ' + startLocation[0].formatted_address,
 				lat: parseFloat(startLocation[0].geometry.location.lat),
-				lng: parseFloat(startLocation[0].geometry.location.lng)
+				lng: parseFloat(startLocation[0].geometry.location.lng),
+				address: startLocation[0].formatted_address
 			}
 
 			endLocationData = {
 				"name": 'End: ' + startLocation[0].formatted_address,
 				lat: parseFloat(startLocation[0].geometry.location.lat),
-				lng: parseFloat(startLocation[0].geometry.location.lng)
+				lng: parseFloat(startLocation[0].geometry.location.lng),
+				address: startLocation[0].formatted_address
 			}
 
 			generateRouteData(startLocation, $scope.selectedEvents, function(response){
@@ -230,13 +234,6 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 				function optimizationCallback(response){
 					configureOptimizedData(response.data.solution.person1, function(result){
-						for (var i = 0; i < result.length; i++) {
-							result[i] = {
-								lat: parseFloat(result[i].latitude),
-								lng: parseFloat(result[i].longitude),
-								name: result[i].name
-							};
-						};
 						result.unshift(startLocationData);
 						result.push(endLocationData);
 
@@ -260,14 +257,26 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 					if($scope.loadedOptions[categories][places].name == orderedData[key].location_id){
 						result.push({
 							name: orderedData[key].location_id,
-							latitude: $scope.loadedOptions[categories][places].latitude,
-							longitude: $scope.loadedOptions[categories][places].longitude
+							lat: parseFloat($scope.loadedOptions[categories][places].latitude),
+							lng: parseFloat($scope.loadedOptions[categories][places].longitude),
+							address: $scope.loadedOptions[categories][places].address.address_string
 						});
 					}
 				}
 			}
 		}
 		callback(result);
+	}
+
+	$scope.editItinerary = function(){
+		$scope.page = 'selectPage';
+
+		$scope.startLocationAddress = "";
+
+		startLocationData = '';
+		endLocationData = '';
+
+		$scope.markersData = [];
 	}
 
 	var _selected;
@@ -300,14 +309,6 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 			queryRestaurantsByLocationId(newLocationId);
 	    });
 	};
-
-
-
-
-
-
-	var map;
-	var infoWindow;
 
 
 	function initialize() {
@@ -344,8 +345,9 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 	      var latlng = new google.maps.LatLng($scope.markersData[i].lat, $scope.markersData[i].lng);
 	      var name = $scope.markersData[i].name;
+	      var address = $scope.markersData[i].address;
 	    
-	      createMarker(latlng, name);
+	      createMarker(latlng, name, address);
 
 	      // marker position is added to bounds variable
 	      bounds.extend(latlng);  
@@ -356,7 +358,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	}
 
 	// This function creates each marker and it sets their Info Window content
-	function createMarker(latlng, name){
+	function createMarker(latlng, name, address){
 	   var marker = new google.maps.Marker({
 	      map: map,
 	      position: latlng,
@@ -368,9 +370,8 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	      // Creating the content to be inserted in the infowindow
 	      var iwContent = '<div id="iw_container">' +
 	            '<div class="iw_title">' + name + '</div>' +
-	         '<div class="iw_content">' + address1 + '<br />' +
-	         address2 + '<br />' +
-	         postalCode + '</div></div>';
+	         '<div class="iw_content">' + address + '<br />' +
+	         '<br />';
 	      
 	      infoWindow.setContent(iwContent);
 
