@@ -93,8 +93,10 @@
     box-shadow: none;
     height: 30px;
     padding: 3px;
+    margin-bottom: 5%;
 }
 
-#currentLocationForm{
-
+#currentLocationForm label{
+    color: whitesmoke;
+    text-align: center;
 } 

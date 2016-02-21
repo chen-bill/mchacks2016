@@ -44,8 +44,11 @@
     <div class="sidebar">
         <h3 id="destination-label">{{location}} Itinerary</h3>
         <form id="currentLocationForm">
-            <label>Starting Location:</label>
-            <input placeholder="123 Seasame street, ON, Canada" ng-model="startLocationAddress">
+            <div class="start-location-block">
+                <label>Starting Location:</label>
+                <input placeholder="123 Seasame street, ON, Canada" ng-model="startLocationAddress">
+            </div>
+
             <button class="btn btn-primary" ng-click="generateItinerary()" ng-disabled="selectedEvents.length > 0 ? '' : 'disabled'">Generate Itinerary</button>
         </form>
         <ul id="selected-list">
@@ -122,7 +125,7 @@
             </ul>
         </div>
         <div class="input-group uber-estimate">
-            <input type="text" class="form-control" placeholder="Estimate: $25.00">
+            <input type="text" class="form-control" placeholder="Estimate: $25.00 in total">
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button">Call an Uber</button>
             </span>
