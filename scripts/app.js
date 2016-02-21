@@ -63,8 +63,9 @@ angular.module('mainApp', ['ui.bootstrap'])
 		if(type == 'attractions'){
 			var attractionsArray = httpResponse.data.data;
 			for(var key in attractionsArray){
-				$scope.loadedOptions.attractionsOptions[attractionsArray[key].name] = {
-					name: attractionsArray[key].name,
+				var newName = attractionsArray[key].name.replace(/[^\w\s]/gi, '');
+				$scope.loadedOptions.attractionsOptions[newName] = {
+					name: newName,
 					latitude: attractionsArray[key].latitude,
 					longitude: attractionsArray[key].longitude,
 					rating: attractionsArray[key].rating,
@@ -76,7 +77,7 @@ angular.module('mainApp', ['ui.bootstrap'])
 			var restaurantsArray = httpResponse.data.data;
 			for(var key in restaurantsArray){
 				$scope.loadedOptions.restaurantOptions[restaurantsArray[key].name] = {
-					name: restaurantsArray[key].name,
+					name: restaurantsArray[key].name.replace(/[^\w\s]/gi, ''),
 					latitude: restaurantsArray[key].latitude,
 					longitude: restaurantsArray[key].longitude,
 					rating: restaurantsArray[key].rating,
@@ -88,7 +89,7 @@ angular.module('mainApp', ['ui.bootstrap'])
 			var hotelOptions = httpResponse.data.data;
 			for(var key in hotelOptions){
 				$scope.loadedOptions.hotelOptions[hotelOptions[key].name] = {
-					name: hotelOptions[key].name,
+					name: hotelOptions[key].name.replace(/[^\w\s]/gi, ''),
 					latitude: hotelOptions[key].latitude,
 					longitude: hotelOptions[key].longitude,
 					rating: hotelOptions[key].rating,
@@ -98,61 +99,9 @@ angular.module('mainApp', ['ui.bootstrap'])
 			}
 		}
 	}
-	var mockItinerary = [
-	  {
-	    "name": "Toronto Bicycle Tours",
-	    "latitude": "43.6545",
-	    "longitude": "-79.39039",
-	    "rating": "5.0",
-	    "address": {
-	      "street1": "275 Dundas Street West",
-	      "street2": "",
-	      "city": "Toronto",
-	      "state": "Ontario",
-	      "country": "Canada",
-	      "postalcode": "M5T 3K1",
-	      "address_string": "275 Dundas Street West, Toronto, Ontario M5T 3K1 Canada"
-	    },
-	    "selected": false,
-	    "$$hashKey": "object:100"
-	  },
-	  {
-	    "name": "Edge Walk at the CN Tower",
-	    "latitude": "43.643883",
-	    "longitude": "-79.38902",
-	    "rating": "5.0",
-	    "address": {
-	      "street1": "301 Front Street West",
-	      "street2": "",
-	      "city": "Toronto",
-	      "state": "Ontario",
-	      "country": "Canada",
-	      "postalcode": "M5V 2T6 ",
-	      "address_string": "301 Front Street West, Toronto, Ontario M5V 2T6 Canada"
-	    },
-	    "selected": false,
-	    "$$hashKey": "object:102"
-	  },
-	  {
-	    "name": "St. Lawrence Market",
-	    "latitude": "43.64921",
-	    "longitude": "-79.371956",
-	    "rating": "4.5",
-	    "address": {
-	      "street1": "92-95 Front St. E.",
-	      "street2": "",
-	      "city": "Toronto",
-	      "state": "Ontario",
-	      "country": "Canada",
-	      "postalcode": "M5E 1C3",
-	      "address_string": "92-95 Front St. E., Toronto, Ontario M5E 1C3 Canada"
-	    },
-	    "selected": false,
-	    "$$hashKey": "object:104"
-	  }
-	];
 
-	function generateRouteData(itinerary) {
+
+	function generateRouteData(itinerary, callback) {
 		if (itinerary.length == 0)
 			return null;
 
@@ -162,16 +111,18 @@ angular.module('mainApp', ['ui.bootstrap'])
 		}
 		for (var i = 0; i < itinerary.length; i++) {
 			var itineraryName = itinerary[i].name;
+			console.log(itineraryName);
+
 			result.visits[itineraryName] = {
 				"location": {
-					"name": itinerary[i].address.street1,
+					"name": itineraryName,
 					"lat": itinerary[i].latitude,
 					"lng": itinerary[i].longitude,
 				},
 				"duration": 1
 			};
 		};
-		//todo: start locaton??? get from user?
+
 		result.fleet = {
 			"person1": {
 				"start_location": {
@@ -190,19 +141,14 @@ angular.module('mainApp', ['ui.bootstrap'])
 				"shift_end": "23:59"
 			}
 		}
-		console.log(result);
-		return result;
+		callback(result);
 	};
 
 	// console.log(mockItinerary);
 	// generateRouteData(mockItinerary);
 
-	$scope.generate = function(){
-		$scope.page = 'resultPage';
-	}
-
 	$scope.debug = function(){
-		console.log(JSON.stringify($scope.selectedEvents));
+		console.log($scope.loadedOptions);
 	}
 
 	$scope.addEvent = function(event){
@@ -220,14 +166,53 @@ angular.module('mainApp', ['ui.bootstrap'])
 	function removeEvent(event){
 		for(var item in $scope.selectedEvents){
 			if($scope.selectedEvents[item].name == event.name){
-				console.log('here');
 				$scope.selectedEvents.splice(item, 1);
 			}
 		}
 	}
 
 	$scope.generateItinerary = function(queryLocation){
-		$scope.page = 'result-page';
+		$scope.page = 'resultPage';
+		generateRouteData($scope.selectedEvents, function(response){
+			var req = {
+				method: 'POST',
+				url: 'https://api.routific.com/v1/vrp',
+				headers: {
+				  	'Content-Type': 'application/json',
+				  	'Authorization': 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1MzEzZDZiYTNiMDBkMzA4MDA2ZTliOGEiLCJpYXQiOjEzOTM4MDkwODJ9.PR5qTHsqPogeIIe0NyH2oheaGR-SJXDsxPTcUQNq90E'
+				},
+				data: response
+			}
+
+			$http(req).then(optimizationCallback, optimizationError);
+
+			function optimizationCallback(response){
+				configureOptimizedData(response.data.solution.person1);
+			}
+
+			function optimizationError(error){
+				console.log('error in optimzation search: ' + JSON.stringify(error));
+			}
+		});
+	}
+
+	function configureOptimizedData (orderedData){
+		console.log(orderedData);
+		var result = [];
+		for(var key in orderedData){
+			for(var categories in $scope.loadedOptions){
+				for(var places in $scope.loadedOptions[categories]){
+					if($scope.loadedOptions[categories][places].name == orderedData[key].location_id){
+						result.push({
+							name: orderedData[key].location_id,
+							latitude: $scope.loadedOptions[categories][places].latitude,
+							longitude: $scope.loadedOptions[categories][places].longitude
+						});
+					}
+				}
+			}
+		}
+		console.log(result);
 	}
 
 	var _selected;
