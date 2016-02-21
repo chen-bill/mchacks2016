@@ -37,20 +37,16 @@
         <div ng-show="noResults">
           <i class="glyphicon glyphicon-remove"></i> No Results Found
         </div>
-
-        <!-- 
-        <div class="input-group">
-            <input type="text" class="form-control" ng-model="location" placeholder="Please enter your destination" id="location-text"/>
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button" id="search-button" ng-click="queryLocation(location)">Search!</button>
-            </span>
-        </div> -->
     </div>
 </div>
 <div class="select-page slideTransition" ng-show="page == 'selectPage'">
     <div class="sidebar">
         <h3 id="destination-label">{{location}} Itinerary</h3>
-        <button class="btn btn-primary" ng-click="generateItinerary()" ng-disabled="selectedEvents.length > 0 ? '' : 'disabled'">Generate Itinerary</button>
+        <form id="currentLocationForm">
+            <label>Starting Location:</label>
+            <input placeholder="123 Seasame street, ON, Canada" ng-model="startLocationAddress">
+            <button class="btn btn-primary" ng-click="generateItinerary()" ng-disabled="selectedEvents.length > 0 ? '' : 'disabled'">Generate Itinerary</button>
+        </form>
         <ul id="selected-list">
             <li ng-repeat="event in selectedEvents" class="slide-left">{{event.name}}<i class="fa fa-times" ng-click="addEvent(event)"></i></li>
         </ul>
