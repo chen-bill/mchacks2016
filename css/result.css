@@ -4,16 +4,18 @@
 }
 
 .map {
-    width: 50%;
-    margin-left: 50%;
+    width: 70%;
+    margin-left: 30%;
     height: 100%;
     position: fixed;
 }
 
 .itinerary {
-    width: 50%;
+    width: 30%;
     height: 100%;
     position: fixed;
+    padding: 2% 2% 0 2%;
+    background-color: #2F4F4F !important;
 }
 
 .panel-heading h3 {
@@ -26,7 +28,10 @@
 
 .share-buttons {
     display: table;
-    margin-left: 44%;
-    margin-right: auto;
     margin-bottom: 5%;
+    float: right;
+}
+
+.uber-estimate {
+    margin: 5% 0 5% 0;
 }

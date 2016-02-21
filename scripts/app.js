@@ -15,29 +15,11 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		restaurantOptions: {}
 	};
 	$scope.startLocationAddress = "";
+	
 	var startLocationData;
 	var endLocationData;
 
-	$scope.markersData = [
-	   {
-	  lat: 40.6386333,
-	      lng: -8.745,
-	      name: "1",
-
-	   },
-	   {
-	       lat: 40.59955,
-	      lng: -8.7498167,
-	      name: "2",
-
-	   },
-	   {
-	     lat: 40.6247167,
-	      lng: -8.7129167,
-	      name: "3",
-	 
-	   } 
-	];
+	$scope.markersData = [];
 
 	function queryLocationByName(queriedLocation, callback){
 		$scope.loading = true;
@@ -244,7 +226,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 					data: response
 				}
 
-				$http(req).then(optimizationCallback, optimizationError);
+			$http(req).then(optimizationCallback, optimizationError);
 
 				function optimizationCallback(response){
 					configureOptimizedData(response.data.solution.person1, function(result){
@@ -258,7 +240,6 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 						result.unshift(startLocationData);
 						result.push(endLocationData);
 
-						console.log(result);
 						$scope.markersData = result;
 						initialize();
 					});
@@ -349,7 +330,6 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	   // Finally displayMarkers() function is called to begin the markers creation
 	   displayMarkers();
 	}
-	//google.maps.event.addDomListener(window, 'load', initialize);
 
 
 	// This function will iterate over markersData array
@@ -397,5 +377,15 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	      infoWindow.open(map, marker);
 	   });
 	}
+
+
+	//  // Pass the directions request to the directions service.
+ // 	var directionsService = new google.maps.DirectionsService();
+	// directionsService.route(request, function(response, status) {
+	// if (status == google.maps.DirectionsStatus.OK) {
+	// 	// Display the route on the map.
+	// 	directionsDisplay.setDirections(response);
+	// }
+	// });
 
 }])
