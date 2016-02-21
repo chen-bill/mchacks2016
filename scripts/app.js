@@ -236,11 +236,10 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 					configureOptimizedData(response.data.solution.person1, function(result){
 						result.unshift(startLocationData);
 						result.push(endLocationData);
-
 						$scope.markersData = result;
 						initialize();
-					});
-				}
+				});
+			}
 
 				function optimizationError(error){
 					console.log('error in optimzation search: ' + JSON.stringify(error));
