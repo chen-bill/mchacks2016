@@ -95,8 +95,6 @@
     -moz-animation-delay: 1.04s;
 }
 
-
-
 @keyframes fold {
     0%, 10% {
         transform: perspective(438px) rotateX(-180deg);
