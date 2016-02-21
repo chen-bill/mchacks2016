@@ -51,6 +51,7 @@
 
             <button class="btn btn-primary" ng-click="generateItinerary()" ng-disabled="selectedEvents.length > 0 ? '' : 'disabled'">Generate Itinerary</button>
         </form>
+        <button class="btn btn-primary change-city-btn">Change City</button>
         <ul id="selected-list">
             <li ng-repeat="event in selectedEvents" class="slide-left">{{event.name}}<i class="fa fa-times" ng-click="addEvent(event)"></i></li>
         </ul>
