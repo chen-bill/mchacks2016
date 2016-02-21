@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('mainApp', ['ui.bootstrap'])
+angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 .controller('mainController', ['$scope', '$http', function($scope, $http){
 	var tripAdvisorApiKey = '4F99833E8FE6438E9F753AE4E0257653';
 

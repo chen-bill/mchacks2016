@@ -1,7 +1,8 @@
-.fade.ng-enter {
-  opacity:0;
+/*.slideTransition{
+	translation: 2s ease all;
+	opacity: 0;
 }
 
-.fade.ng-enter.ng-enter-active {
-  opacity:1;
-}
+.slideTransition.ng-hide {
+  	opacity:1;
+}*/
