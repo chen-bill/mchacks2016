@@ -2,18 +2,15 @@
 <html lang="en" ng-app="mainApp" style="height: 100%; width: 100%">
 <head>
     <meta charset="UTF-8">
-    <title>Explore Away</title>
+    <title>City Explorer</title>
     <link rel="shortcut icon" href="/media/favicon.ico" />
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel="stylesheet" type="text/css" href="css/landing.css">
     <link rel="stylesheet" type="text/css" href="css/select.css">
     <link rel="stylesheet" type="text/css" href="css/loading.css">
     <link rel="stylesheet" type="text/css" href="css/ng-animation.css">
-
     <link rel="stylesheet" type="text/css" href="css/result.css">
-
     <link rel="stylesheet" type="text/css" href="css/style.css">
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:400,400italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
@@ -34,8 +31,7 @@
 
 <div class="landing-page slideTransition" ng-show="page == 'landingPage'">
     <div class="row center-container" id="centerContainer">
-        <h1>Explore Away</h1>
-
+        <h1>City Explorer</h1>
         <form>
             <input type="text" ng-model="asyncSelected" placeholder="Where are you going?" uib-typeahead="address for address in getLocation($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noResults" typeahead-on-select="onSelect($item, $model, $label)" class="form-control">
         </form>
@@ -119,7 +115,7 @@
     </div>
 </div>
 
-<!-- <div class="result-page slideTransition" ng-if="page=='resultPage'">
+<div class="result-page" ng-show="page == 'resultPage'">
     <div class="itinerary panel panel-default">
         <div class="panel-heading">
             <h3>Itinerary</h3>
@@ -136,10 +132,7 @@
             <button type="button" class="btn btn-default"><i class="fa fa-github"></i></button>
         </div>
     </div>
-    <div class="map" id="map-canvas"></div> -->
-
-<div class="result-page map" ng-show="page == 'resultPage'" id="map-canvas">
-
+    <div class="map" id="map-canvas"></div>
 </div>
 
 <div class="loading-page" ng-if="page=='loadingPage'">
