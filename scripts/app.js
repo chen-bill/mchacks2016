@@ -16,6 +16,10 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	};
 	$scope.startLocationAddress = "";
 
+	// map stuff
+	$scope.totalTripDistance;
+	$scope.totalTripTime;
+
 	var startLocationData;
 	var endLocationData;
 
@@ -287,6 +291,14 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		callback(result);
 	}
 
+	$scope.editItinerary = function(){
+		$scope.page = "selectPage";
+		$scope.location = "";
+		$scope.loading = false;
+		$scope.startLocationAddress = "";
+		$scope.markersData = [];
+	}
+
 	var _selected;
 	$scope.getLocation = function(val) {
 	return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
@@ -334,9 +346,6 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	}
 
 	function calcRoute() {
-	    var first = new google.maps.LatLng(43.642048, -79.386314);
-	    var second = new google.maps.LatLng(43.64921, -79.371956);
-
 	    var waypointsData = [];
 	    for(var events in $scope.markersData){
 	    	waypointsData.push({
@@ -349,11 +358,11 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	        origin: new google.maps.LatLng(startLocationData.lat,startLocationData.lng),
 	        destination: new google.maps.LatLng(startLocationData.lat,startLocationData.lng),
 	        waypoints: waypointsData,
-	        // optimizeWaypoints: true,
 	        travelMode: google.maps.DirectionsTravelMode.WALKING
 	    };
 
 	    directionsService.route(request, function (response, status) {
+	    	console.log(response);
 	        if (status == google.maps.DirectionsStatus.OK) {
 	            directionsDisplay.setDirections(response);
 	            var route = response.routes[0];
