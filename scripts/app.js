@@ -19,6 +19,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	var startLocationData;
 	var endLocationData;
 
+
 	$scope.markersData = [];
 
 	function queryLocationByName(queriedLocation, callback){
@@ -251,11 +252,10 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 						};
 						result.unshift(startLocationData);
 						result.push(endLocationData);
-
 						$scope.markersData = result;
 						initialize();
-					});
-				}
+				});
+			}
 
 				function optimizationError(error){
 					console.log('error in optimzation search: ' + JSON.stringify(error));
@@ -320,6 +320,15 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 	var map;
 	var infoWindow;
+	 var directionsService = new google.maps.DirectionsService();
+var request = {
+      
+        // destination: destination,
+        // waypoints: waypoints,
+        // travelMode: mode,
+        // optimizeWaypoints: true,
+        // avoidHighways: false
+    };
 
 
 	function initialize() {
@@ -327,7 +336,9 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	   var mapOptions = {
 	      center: new google.maps.LatLng(40.601203,-8.668173),
 	      zoom: 5,
-	      mapTypeId: 'roadmap',
+	      mapTypeId: 'roadmap'
+	     
+
 	   };
 
 	   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -390,6 +401,28 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	      infoWindow.open(map, marker);
 	   });
 	}
+directionsService.route(request, function(response, status) {
+      // if (status == google.maps.DirectionsStatus.OK) {
+      //   var points_text = "", format = "raw";
+      
+      //   response.routes[0].bounds.getCenter.lng
+      //   var nPoints = response.routes[0].overview_path.length;
+      //   for (var i = 0; i < nPoints; i++) { 
+      //       if ( format == "json" ) {
+      //           points_text += '\t' + serializeLatLng(response.routes[0].overview_path[i]) + (i < (nPoints - 1) ? ',\n' : '');
+      //       } else {
+      //           points_text += response.routes[0].overview_path[i].lat() + ',' + response.routes[0].overview_path[i].lng() + '\n';
+      //       }
+      //   }
+      //   if ( format == "json" ) {
+      //       points_text += '\n];'
+      //   }
+      //   var points_textarea=document.getElementById("points_textarea");
+      //   points_textarea.value = points_text;
+      //   //clearMarkers();
+        directionsDisplay.setDirections(response);
+     // }
+    });
 
 
 	//  // Pass the directions request to the directions service.

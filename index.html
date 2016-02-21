@@ -44,12 +44,11 @@
     <div class="sidebar">
         <h3 id="destination-label">{{location}} Itinerary</h3>
         <form id="currentLocationForm">
-            <div class="start-location-block">
-                <label>Starting Location:</label>
-                <input placeholder="123 Seasame street, ON, Canada" ng-model="startLocationAddress">
-            </div>
+            <!-- <label>Starting Location:</label> -->
+            <!-- <input placeholder="123 Seasame street, ON, Canada" ng-model="startLocationAddress"> -->
+            <input type="text" ng-model="startLocationAddress" placeholder="Starting location" uib-typeahead="address for address in getLocation($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noResults" class="form-control">
+            <button class="btn btn-primary" ng-click="generateItinerary()" ng-disabled="selectedEvents.length > 0 && startLocationAddress ? '' : 'disabled'">Generate Itinerary</button>
 
-            <button class="btn btn-primary" ng-click="generateItinerary()" ng-disabled="selectedEvents.length > 0 ? '' : 'disabled'">Generate Itinerary</button>
         </form>
         <button class="btn btn-primary change-city-btn">Change City</button>
         <ul id="selected-list">
@@ -131,7 +130,7 @@
                 <button class="btn btn-default" type="button">Call an Uber</button>
             </span>
         </div>
-        <button class="btn btn-primary" id="edit-itinerary-btn">Edit Itinerary</button>
+        <button class="btn btn-primary" id="edit-itinerary-btn" ng-click="editItinerary()"><i class="fa fa-pencil fa-fw"></i>Edit Itinerary</button>
         <div class="btn-group share-buttons" role="group">
             <button type="button" class="btn btn-default"><i class="fa fa-google"></i></button>
             <button type="button" class="btn btn-default"><i class="fa fa-facebook"></i></button>
