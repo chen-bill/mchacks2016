@@ -6,6 +6,7 @@ angular.module('mainApp', ['ui.bootstrap'])
 
 	$scope.page = "landingPage";
 	$scope.location = "";
+	$scope.loading = false;
 	$scope.selectedEvents = [];
 	$scope.loadedOptions = {
 		hotelOptions: {},
@@ -14,7 +15,7 @@ angular.module('mainApp', ['ui.bootstrap'])
 	};
 
 	$scope.queryLocation = function(queryLocation){
-		$scope.page = 'selectPage';
+		$scope.loading = true;
 		$http.get('http://api.tripadvisor.com/api/partner/2.0/search/' + queryLocation + '?key=' + tripAdvisorApiKey + '&categories=geos')
 			.then(function(res){
 				var newLocationId = res.data.geos[0].location_id;
@@ -31,6 +32,8 @@ angular.module('mainApp', ['ui.bootstrap'])
 
 		function querySuccess(httpResponse){
 			parseData('attractions', httpResponse);
+			$scope.page = 'selectPage';
+			$scope.loading = false;
 		};
 		function queryError(err){
 			console.log(err);
