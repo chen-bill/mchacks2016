@@ -95,12 +95,12 @@ function createMarker(latlng, name){
 }
 
 
-//   // Pass the directions request to the directions service.
-//   var directionsService = new google.maps.DirectionsService();
-//   directionsService.route(request, function(response, status) {
-//     if (status == google.maps.DirectionsStatus.OK) {
-//       // Display the route on the map.
-//       directionsDisplay.setDirections(response);
-//     }
-//   });
-// }
+ // Pass the directions request to the directions service.
+ var directionsService = new google.maps.DirectionsService();
+   directionsService.route(request, function(response, status) {
+     if (status == google.maps.DirectionsStatus.OK) {
+       // Display the route on the map.
+       directionsDisplay.setDirections(response);
+     }
+   });
+ }
