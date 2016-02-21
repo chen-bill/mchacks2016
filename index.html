@@ -30,6 +30,14 @@
         <div ng-show="noResults">
           <i class="glyphicon glyphicon-remove"></i> No Results Found
         </div>
+
+        <!-- 
+        <div class="input-group">
+            <input type="text" class="form-control" ng-model="location" placeholder="Please enter your destination" id="location-text"/>
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" id="search-button" ng-click="queryLocation(location)">Search!</button>
+            </span>
+        </div> -->
     </div>
 </div>
 <div class="select-page" ng-if="page == 'selectPage'">
@@ -49,45 +57,9 @@
                     </h4>
                 </div>
                 <div id="attractions-collapse" class="panel-collapse active collapse in">
-                    <div id="attractions-list" class="panel-body">
-                        <div class="row select-list">
-                            <div class="card col-lg-3 col-md-4 col-xs-6">
-                                <img class="attraction-image" src="http://placehold.it/200x200" alt="">
-                                <ul class="list-group">
-                                    <li class="list-group-item attraction-name">Name Name Name</li>
-                                    <li class="list-group-item attraction-address">123 45 St, Blah Blah</li>
-                                    <li class="list-group-item attraction-rating">Rating: 5</li>
-                                </ul>
-                            </div>
-                            <div class="card col-lg-3 col-md-4 col-xs-6">
-                                <img class="attraction-image" src="http://placehold.it/200x200" alt="">
-                                <ul class="list-group">
-                                    <li class="list-group-item attraction-name">Name Name Name</li>
-                                    <li class="list-group-item attraction-address">123 45 St, Blah Blah</li>
-                                    <li class="list-group-item attraction-rating">Rating: 5</li>
-                                </ul>
-                            </div>
-                            <div class="card col-lg-3 col-md-4 col-xs-6">
-                                <img class="attraction-image" src="http://placehold.it/200x200" alt="">
-                                <ul class="list-group">
-                                    <li class="list-group-item attraction-name">Name Name Name</li>
-                                    <li class="list-group-item attraction-address">123 45 St, Blah Blah</li>
-                                    <li class="list-group-item attraction-rating">Rating: 5</li>
-                                </ul>
-                            </div>
-                            <div class="card col-lg-3 col-md-4 col-xs-6">
-                                <img class="attraction-image" src="http://placehold.it/200x200" alt="">
-                                <ul class="list-group">
-                                    <li class="list-group-item attraction-name">Name Name Name</li>
-                                    <li class="list-group-item attraction-address">123 45 St, Blah Blah</li>
-                                    <li class="list-group-item attraction-rating">Rating: 5</li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div class="list-group select-list" id="attractions-list">
+                        <a class="list-group-item" ng-repeat="attraction in loadedOptions.attractionsOptions" ng-click="addEvent(attraction)" ng-class="attraction.selected ? 'active':''">{{attraction.name}}<img/></a>
                     </div>
-                    <!--<div class="list-group select-list" id="attractions-list">-->
-                        <!--<a class="list-group-item" ng-repeat="attraction in loadedOptions.attractionsOptions" ng-click="">{{attraction.name}}</a>-->
-                    <!--</div>-->
                 </div>
             </div>
         </div>
@@ -99,42 +71,8 @@
                     </h4>
                 </div>
                 <div id="restaurant-collapse" class="panel-collapse collapse in">
-                    <div id="restaurant-list" class="panel-body">
-                        <div class="row select-list">
-                            <div class="card col-lg-3 col-md-4 col-xs-6">
-                                <img class="restaurant-image" src="http://placehold.it/200x200" alt="">
-                                <ul class="list-group">
-                                    <li class="list-group-item restaurant-name">Name Name Name</li>
-                                    <li class="list-group-item restaurant-address">123 45 St, Blah Blah</li>
-                                    <li class="list-group-item restaurant-rating">Rating: 5</li>
-                                </ul>
-                            </div>
-                            <div class="card col-lg-3 col-md-4 col-xs-6">
-                                <img class="restaurant-image" src="http://placehold.it/200x200" alt="">
-                                <ul class="list-group">
-                                    <li class="list-group-item restaurant-name">Name Name Name</li>
-                                    <li class="list-group-item restaurant-address">123 45 St, Blah Blah</li>
-                                    <li class="list-group-item restaurant-rating">Rating: 5</li>
-                                </ul>
-                            </div>
-                            <div class="card col-lg-3 col-md-4 col-xs-6">
-                                <img class="restaurant-image" src="http://placehold.it/200x200" alt="">
-                                <ul class="list-group">
-                                    <li class="list-group-item restaurant-name">Name Name Name</li>
-                                    <li class="list-group-item restaurant-address">123 45 St, Blah Blah</li>
-                                    <li class="list-group-item restaurant-rating">Rating: 5</li>
-                                </ul>
-                            </div>
-                            <div class="card col-lg-3 col-md-4 col-xs-6">
-                                <img class="restaurant-image" src="http://placehold.it/200x200" alt="">
-                                <ul class="list-group">
-                                    <li class="list-group-item restaurant-name">Name Name Name</li>
-                                    <li class="list-group-item restaurant-address">123 45 St, Blah Blah</li>
-                                    <li class="list-group-item restaurant-rating">Rating: 5</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!--<a class="list-group-item" ng-repeat="restaurant in loadedOptions.restaurantOptions" ng-click="">{{restaurant.name}}</a>-->
+                    <div class="list-group" id="restaurant-list">
+                        <a class="list-group-item" ng-repeat="restaurant in loadedOptions.restaurantOptions" ng-click="">{{restaurant.name}}</a>
                     </div>
                 </div>
             </div>
@@ -147,41 +85,8 @@
                     </h4>
                 </div>
                 <div id="hotel-collapse" class="panel-collapse collapse in">
-                    <div id="hotel-list" class="panel-body">
-                        <div class="row select-list">
-                            <div class="card col-lg-3 col-md-4 col-xs-6">
-                                <img class="hotel-image" src="http://placehold.it/200x200" alt="">
-                                <ul class="list-group">
-                                    <li class="list-group-item hotel-name">Name Name Name</li>
-                                    <li class="list-group-item hotel-address">123 45 St, Blah Blah</li>
-                                    <li class="list-group-item hotel-rating">Rating: 5</li>
-                                </ul>
-                            </div>
-                            <div class="card col-lg-3 col-md-4 col-xs-6">
-                                <img class="hotel-image" src="http://placehold.it/200x200" alt="">
-                                <ul class="list-group">
-                                    <li class="list-group-item hotel-name">Name Name Name</li>
-                                    <li class="list-group-item hotel-address">123 45 St, Blah Blah</li>
-                                    <li class="list-group-item hotel-rating">Rating: 5</li>
-                                </ul>
-                            </div>
-                            <div class="card col-lg-3 col-md-4 col-xs-6">
-                                <img class="hotel-image" src="http://placehold.it/200x200" alt="">
-                                <ul class="list-group">
-                                    <li class="list-group-item hotel-name">Name Name Name</li>
-                                    <li class="list-group-item hotel-address">123 45 St, Blah Blah</li>
-                                    <li class="list-group-item hotel-rating">Rating: 5</li>
-                                </ul>
-                            </div>
-                            <div class="card col-lg-3 col-md-4 col-xs-6">
-                                <img class="hotel-image" src="http://placehold.it/200x200" alt="">
-                                <ul class="list-group">
-                                    <li class="list-group-item hotel-name">Name Name Name</li>
-                                    <li class="list-group-item hotel-address">123 45 St, Blah Blah</li>
-                                    <li class="list-group-item hotel-rating">Rating: 5</li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div class="list-group" id="hotel-list">
+                        <a class="list-group-item" ng-repeat="hotel in loadedOptions.hotelOptions">{{hotel.name}}</a>
                     </div>
                 </div>
             </div>

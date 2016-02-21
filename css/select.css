@@ -40,10 +40,26 @@
     padding: 0.5% 1% 0.5% 1%;
 }
 
+<<<<<<< Updated upstream
 .panel-body .row{
     background-color: rgba(255,255,255,0);
 }
 
 .card {
     background-color: white;
+=======
+.attraction-image, .restaurant-image, .hotel-image {
+    display: block;
+    margin: auto;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.card{
+    margin-bottom: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
+    background: white;
+    height: 300px;
+>>>>>>> Stashed changes
 }
