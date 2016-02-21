@@ -75,3 +75,9 @@
     margin-left: 5px;
     background: white;
     height: 300px;
+}
+
+.ratingImage{
+    float: right;
+    margin-top: 10px;
+}

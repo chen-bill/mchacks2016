@@ -60,7 +60,11 @@
                 </div>
                 <div id="attractions-collapse" class="panel-collapse active collapse in">
                     <div class="list-group select-list" id="attractions-list">
-                        <a class="list-group-item" ng-repeat="attraction in loadedOptions.attractionsOptions" ng-click="addEvent(attraction)" ng-class="attraction.selected ? 'active':''">{{attraction.name}}</a>
+                        <a class="list-group-item" ng-repeat="attraction in loadedOptions.attractionsOptions" ng-click="addEvent(attraction)" ng-class="attraction.selected ? 'active':''"><img class="ratingImage" ng-src="{{attraction.ratingImage}}"/><h4>{{attraction.name}}
+                            <span src=""></span>
+                        </h4>
+                            <p>{{attraction.address.address_string}}</p>
+                            </a>
                     </div>
                 </div>
             </div>
