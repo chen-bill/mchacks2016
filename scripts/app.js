@@ -18,7 +18,11 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 	var startLocationData;
 	var endLocationData;
-    var uberEstimates;
+
+	var directionsDisplay;
+	var directionsService = new google.maps.DirectionsService();
+	var map;
+
 
 	$scope.markersData = [];
 
@@ -240,8 +244,8 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 				}
 
 			$http(req).then(optimizationCallback, optimizationError);
-
 				function optimizationCallback(response){
+					console.log(response);
 					configureOptimizedData(response.data.solution.person1, function(result){
 						for (var i = 0; i < result.length; i++) {
 							result[i] = {
@@ -252,10 +256,11 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 						};
 						result.unshift(startLocationData);
 						result.push(endLocationData);
+
 						$scope.markersData = result;
 						initialize();
-				});
-			}
+					});
+				}
 
 				function optimizationError(error){
 					console.log('error in optimzation search: ' + JSON.stringify(error));
@@ -313,120 +318,59 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	    });
 	};
 
-	var map;
-	var infoWindow;
-	 var directionsService = new google.maps.DirectionsService();
-var request = {
-      
-        // destination: destination,
-        // waypoints: waypoints,
-        // travelMode: mode,
-        // optimizeWaypoints: true,
-        // avoidHighways: false
-    };
-
+// Bills attempt
 
 	function initialize() {
-        queryEstimate();
-	   var mapOptions = {
-	      center: new google.maps.LatLng(40.601203,-8.668173),
-	      zoom: 5,
-	      mapTypeId: 'roadmap'
-	     
-
-	   };
-
-	   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-	   // a new Info Window is created
-	   infoWindow = new google.maps.InfoWindow();
-
-	   // Event that closes the Info Window with a click on the map
-	   google.maps.event.addListener(map, 'click', function() {
-	      infoWindow.close();
-	   });
-
-	   // Finally displayMarkers() function is called to begin the markers creation
-	   displayMarkers();
+	    directionsDisplay = new google.maps.DirectionsRenderer();
+	    var myOptions = {
+	        zoom: 5,
+	        mapTypeId: google.maps.MapTypeId.ROADMAP,
+	        center: google.maps.LatLng(40.601203,-8.668173),
+	        draggableCursor: "pointer",
+	    };
+	    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	    directionsDisplay.setMap(map);
+	    calcRoute();
 	}
 
+	function calcRoute() {
+	    var first = new google.maps.LatLng(43.642048, -79.386314);
+	    var second = new google.maps.LatLng(43.64921, -79.371956);
 
-	// This function will iterate over markersData array
-	// creating markers with createMarker function
-	function displayMarkers(){
+	    var waypointsData = [];
+	    for(var events in $scope.markersData){
+	    	waypointsData.push({
+	    		location: new google.maps.LatLng($scope.markersData[events].lat, $scope.markersData[events].lng),
+	    		stopover: false
+	    	})
+	    }
 
-	   // this variable sets the map bounds according to markers position
-	   var bounds = new google.maps.LatLngBounds();
+	    var request = {
+	        origin: new google.maps.LatLng(startLocationData.lat,startLocationData.lng),
+	        destination: new google.maps.LatLng(startLocationData.lat,startLocationData.lng),
+	        waypoints: waypointsData,
+	        // optimizeWaypoints: true,
+	        travelMode: google.maps.DirectionsTravelMode.WALKING
+	    };
 
-	   // for loop traverses markersData array calling createMarker function for each marker
-	   for (var i = 0; i < $scope.markersData.length; i++){
-
-	      var latlng = new google.maps.LatLng($scope.markersData[i].lat, $scope.markersData[i].lng);
-	      var name = $scope.markersData[i].name;
-
-	      createMarker(latlng, name);
-
-	      // marker position is added to bounds variable
-	      bounds.extend(latlng);
-	   }
-
-
-	   map.fitBounds(bounds);
+	    directionsService.route(request, function (response, status) {
+	        if (status == google.maps.DirectionsStatus.OK) {
+	            directionsDisplay.setDirections(response);
+	            var route = response.routes[0];
+	            var summaryPanel = document.getElementById("directions_panel");
+	            summaryPanel.innerHTML = "";
+	            // For each route, display summary information.
+	            for (var i = 0; i < route.legs.length; i++) {
+	                var routeSegment = i + 1;
+	                summaryPanel.innerHTML += "<b>Route Segment: " + routeSegment + "</b><br />";
+	                summaryPanel.innerHTML += route.legs[i].start_address + " to ";
+	                summaryPanel.innerHTML += route.legs[i].end_address + "<br />";
+	                summaryPanel.innerHTML += route.legs[i].distance.text + "<br /><br />";
+	            }
+	        } else {
+	            alert("directions response " + status);
+	        }
+	    });
 	}
-
-	// This function creates each marker and it sets their Info Window content
-	function createMarker(latlng, name){
-	   var marker = new google.maps.Marker({
-	      map: map,
-	      position: latlng,
-	      title: name
-	   });
-
-	   google.maps.event.addListener(marker, 'click', function() {
-
-	      // Creating the content to be inserted in the infowindow
-	      var iwContent = '<div id="iw_container">' +
-	            '<div class="iw_title">' + name + '</div>' +
-	         '<div class="iw_content">' + address1 + '<br />' +
-	         address2 + '<br />' +
-	         postalCode + '</div></div>';
-
-	      infoWindow.setContent(iwContent);
-
-	      infoWindow.open(map, marker);
-	   });
-	}
-directionsService.route(request, function(response, status) {
-      // if (status == google.maps.DirectionsStatus.OK) {
-      //   var points_text = "", format = "raw";
-      
-      //   response.routes[0].bounds.getCenter.lng
-      //   var nPoints = response.routes[0].overview_path.length;
-      //   for (var i = 0; i < nPoints; i++) { 
-      //       if ( format == "json" ) {
-      //           points_text += '\t' + serializeLatLng(response.routes[0].overview_path[i]) + (i < (nPoints - 1) ? ',\n' : '');
-      //       } else {
-      //           points_text += response.routes[0].overview_path[i].lat() + ',' + response.routes[0].overview_path[i].lng() + '\n';
-      //       }
-      //   }
-      //   if ( format == "json" ) {
-      //       points_text += '\n];'
-      //   }
-      //   var points_textarea=document.getElementById("points_textarea");
-      //   points_textarea.value = points_text;
-      //   //clearMarkers();
-        directionsDisplay.setDirections(response);
-     // }
-    });
-
-
-	//  // Pass the directions request to the directions service.
- // 	var directionsService = new google.maps.DirectionsService();
-	// directionsService.route(request, function(response, status) {
-	// if (status == google.maps.DirectionsStatus.OK) {
-	// 	// Display the route on the map.
-	// 	directionsDisplay.setDirections(response);
-	// }
-	// });
 
 }])
