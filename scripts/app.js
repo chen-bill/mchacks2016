@@ -239,11 +239,10 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 						};
 						result.unshift(startLocationData);
 						result.push(endLocationData);
-
 						$scope.markersData = result;
 						initialize();
-					});
-				}
+				});
+			}
 
 				function optimizationError(error){
 					console.log('error in optimzation search: ' + JSON.stringify(error));

@@ -101,7 +101,12 @@
     padding: 3px;
 }
 
+
 #currentLocationForm label{
     color: whitesmoke;
     text-align: center;
+}
+
+#currentLocationForm input{
+    margin-top: 10px;
 }
