@@ -2,21 +2,26 @@
     display: block;
     width: 100%;
     height: 100%;
+    background: url(http://www.cogecodata.com/UserFiles/file_manager/Products-Services/Data-Centre/Locations/Cogeco-Data-Services-Data-Centre-Toronto.jpg)
+        no-repeat center center fixed;
+    background-size: cover;
+    overflow: scroll;
 }
 
 .sidebar {
     margin-top: 0;
     position: fixed;
-    width: 20%;
+    width: 30%;
     height: 100%;
     padding: 1% 2% 0 2%;
-    background-color: #A5E6BA;
+    background-color: rgba(231,231,231,0.6);
 }
 
 .sidebar h3 {
     text-align: center;
     font-family: 'Josefin Sans', sans-serif;
     margin-bottom: 40px;
+    color: black;
 }
 
 .sidebar button {
@@ -25,9 +30,18 @@
 }
 
 .select-content {
-    width: 80%;
+    width: 70%;
     height: 100%;
-    margin-left: 20%;
+    margin-left: 30%;
     padding: 2% 1% 0 1%;
-    background-color: #FDFDEE;
+}
+
+.select-list {
+    padding: 0.5% 1% 0.5% 1%;
+}
+
+.attraction-image .restaurant-image .hotel-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
