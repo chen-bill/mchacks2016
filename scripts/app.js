@@ -80,7 +80,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
     function queryEstimate(){
         console.log("sending");
-        $http.get("http://api.uber.com/v1/estimates/price?start_latitude=37.625732&start_longitude=-122.377807&end_latitude=37.785114&end_longitude=-122.406677&server_token="
+        $http.get("http://api.uber.com/v1/estimates/price?start_latitude=" + $scope.markersData[0].lat + "+ &start_longitude=" + $scope.markersData[0].lng + "&end_latitude=" + $scope.markersData[1].lat + "&end_longitude=" + $scope.markersData[1].lng + "&server_token="
             + uberServerToken).then(querySuccess, queryError);
         function querySuccess(httpResponse){
             var estimate = httpResponse.data.prices[0].estimate;
