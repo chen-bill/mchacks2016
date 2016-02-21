@@ -43,7 +43,6 @@
     height: 50px;
     border-radius: 0;
     background-color: rgba(40,96,144,0.6);
-    margin-top: 50px;
 }
 
 .select-content {
@@ -82,3 +81,20 @@
     margin: 0 0 0 0;
     cursor: pointer;
 }
+
+#currentLocationForm{
+    margin: 10px;
+}
+
+#currentLocationForm input{
+    width: 100%;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    height: 30px;
+    padding: 3px;
+}
+
+#currentLocationForm{
+
+} 

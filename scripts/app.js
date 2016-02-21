@@ -3,6 +3,7 @@
 angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 .controller('mainController', ['$scope', '$http', function($scope, $http){
 	var tripAdvisorApiKey = '4F99833E8FE6438E9F753AE4E0257653';
+	var googlePlacesApiKey = 'AIzaSyAahHAcSl2j4Yc8ZlhfB85Od1g_NdBGzf8';
 
 	$scope.page = "landingPage";
 	$scope.location = "";
@@ -13,18 +14,32 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		attractionsOptions: {},
 		restaurantOptions: {}
 	};
+	$scope.startLocationAddress = "";
 
+<<<<<<< HEAD
+	function queryLocationByName(queriedLocation, callback){
+=======
 
 	$scope.markersData = [];
 
 	$scope.queryLocation = function(queryLocation){
+>>>>>>> 46c4bf1ee5c644894ec46c5a2f97c81c0155296f
 		$scope.loading = true;
-		$http.get('http://api.tripadvisor.com/api/partner/2.0/search/' + queryLocation + '?key=' + tripAdvisorApiKey + '&categories=geos')
+		$http.get('http://api.tripadvisor.com/api/partner/2.0/search/' + queriedLocation + '?key=' + tripAdvisorApiKey + '&categories=geos')
 			.then(function(res){
-				var newLocationId = res.data.geos[0].location_id;
-				queryAttractionsByLocationId(newLocationId);
-				queryHotelsByLocationId(newLocationId);
-				queryRestaurantsByLocationId(newLocationId);
+				console.log(res);
+				callback(res.data.geos[0].location_id);
+			}, function(err){
+				console.log(err);
+			});
+	}
+
+	function queryLocationByAddress(address, callback){
+		var finalAddress = address.split(' ').join('+');
+		console.log(finalAddress);
+		$http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + finalAddress + '&key=' + googlePlacesApiKey)
+			.then(function(res){
+				console.log(res);
 			}, function(err){
 				console.log(err);
 			});
@@ -84,7 +99,8 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		} else if (type == 'restaurants'){
 			var restaurantsArray = httpResponse.data.data;
 			for(var key in restaurantsArray){
-				$scope.loadedOptions.restaurantOptions[restaurantsArray[key].name] = {
+				var newName = restaurantsArray[key].name.replace(/[^\w\s]/gi, '');
+				$scope.loadedOptions.restaurantOptions[newName] = {
 					name: restaurantsArray[key].name.replace(/[^\w\s]/gi, ''),
 					latitude: restaurantsArray[key].latitude,
 					longitude: restaurantsArray[key].longitude,
@@ -98,7 +114,8 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		} else {
 			var hotelOptions = httpResponse.data.data;
 			for(var key in hotelOptions){
-				$scope.loadedOptions.hotelOptions[hotelOptions[key].name] = {
+				var newName = hotelOptions[key].name.replace(/[^\w\s]/gi, '');
+				$scope.loadedOptions.hotelOptions[newName] = {
 					name: hotelOptions[key].name.replace(/[^\w\s]/gi, ''),
 					latitude: hotelOptions[key].latitude,
 					longitude: hotelOptions[key].longitude,
@@ -114,6 +131,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 
 	function generateRouteData(itinerary, callback) {
+
 		if (itinerary.length == 0)
 			return null;
 
@@ -183,8 +201,21 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		}
 	}
 
-	$scope.generateItinerary = function(queryLocation){
+	$scope.generateItinerary = function(){
 		$scope.page = 'resultPage';
+<<<<<<< HEAD
+			queryLocationByAddress($scope.startLocationAddress);
+			generateRouteData($scope.selectedEvents, function(response){
+				var req = {
+					method: 'POST',
+					url: 'https://api.routific.com/v1/vrp',
+					headers: {
+					  	'Content-Type': 'application/json',
+					  	'Authorization': 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1MzEzZDZiYTNiMDBkMzA4MDA2ZTliOGEiLCJpYXQiOjEzOTM4MDkwODJ9.PR5qTHsqPogeIIe0NyH2oheaGR-SJXDsxPTcUQNq90E'
+					},
+					data: response
+				}
+=======
 		
 		generateRouteData($scope.selectedEvents, function(response){
 			var req = {
@@ -196,9 +227,17 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 				},
 				data: response
 			}
+>>>>>>> 46c4bf1ee5c644894ec46c5a2f97c81c0155296f
 
-			$http(req).then(optimizationCallback, optimizationError);
+				$http(req).then(optimizationCallback, optimizationError);
 
+<<<<<<< HEAD
+				function optimizationCallback(response){
+					configureOptimizedData(response.data.solution.person1, function(result){
+						console.log(result);
+					});
+				}
+=======
 			function optimizationCallback(response){
 				configureOptimizedData(response.data.solution.person1, function(result){
 					for (var i = 0; i < result.length; i++) {
@@ -214,11 +253,12 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 					initialize();
 				});
 			}
+>>>>>>> 46c4bf1ee5c644894ec46c5a2f97c81c0155296f
 
-			function optimizationError(error){
-				console.log('error in optimzation search: ' + JSON.stringify(error));
-			}
-		});
+				function optimizationError(error){
+					console.log('error in optimzation search: ' + JSON.stringify(error));
+				}
+			});
 	}
 
 	function configureOptimizedData (orderedData, callback){
@@ -242,15 +282,15 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	var _selected;
 	$scope.getLocation = function(val) {
 	return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
-	  params: {
-	    address: val,
-	    sensor: false
-	  }
-	}).then(function(response){
-	  return response.data.results.map(function(item){
-	    return item.formatted_address;
-	  });
-	});
+		  params: {
+		    address: val,
+		    sensor: false
+		  }
+		}).then(function(response){
+		  return response.data.results.map(function(item){
+		    return item.formatted_address;
+		  });
+		});
 	};
 
 	$scope.ngModelOptionsSelected = function(value) {
@@ -261,9 +301,13 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		}
 	};
 
-	 $scope.onSelect = function ($item, $model, $label) {
+	$scope.onSelect = function ($item, $model, $label) {
 	 	$scope.location = $label;
-	    $scope.queryLocation($label);
+	    queryLocationByName($label, function(newLocationId){
+	    	queryAttractionsByLocationId(newLocationId);
+			queryHotelsByLocationId(newLocationId);
+			queryRestaurantsByLocationId(newLocationId);
+	    });
 	};
 
 
