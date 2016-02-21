@@ -18,7 +18,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 	var startLocationData;
 	var endLocationData;
-
+    var uberEstimates;
 
 	$scope.markersData = [];
 
