@@ -1,6 +1,10 @@
 .result-page {
     height: 100%;
     width: 100%;
+    background-image: url('http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/1/14/1389716668875/Skylines-quiz-9-001.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: left bottom; 
 }
 
 .map {
@@ -14,15 +18,28 @@
     width: 30%;
     height: 100%;
     position: fixed;
-    background-color: black !important;
+    background-color: rgba(0,0,0,0.85);
 }
 
-.panel-heading h3 {
+.itinerary h3 {
     text-align: center;
+    font-family: 'Josefin Sans', sans-serif;
+    margin-bottom: 20px;
+    color: white;
 }
 
-.itinerary li {
-    margin-left: 1.5%;
+.itinerary ul{
+    margin-top: 10px;
+    padding-left: 20px;
+    overflow: auto;
+    max-height: 81%;
+}
+
+.itinerary ul li {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: white;
+    cursor: pointer;
 }
 
 .share-buttons {
