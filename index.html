@@ -113,16 +113,19 @@
     </div>
 </div>
 <div class="result-page" ng-if="page=='resultPage'">
-    <div class="particles" style="width: 100%; height: 100%;">
-        <!--<div class="map"></div>-->
-        <!--<div class="itinerary">-->
-            <!--<h3>Itinerary</h3>-->
-
-            <!--<ul class="list-group">-->
-                <!--<li class="list-group-item"><span class="badge">2 hours</span>Stop 1</li>-->
-                <!--<li class="list-group-item"><span class="badge">30 min</span>Stop 2</li>-->
-            <!--</ul>-->
-        <!--</div>-->
+    <div class="row">
+        <div class="itinerary panel panel-default">
+            <div class="panel-heading">
+                <h3>Itinerary</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="itinerary-list list-group">
+                    <li class="list-group-item"><span class="badge">2 hours</span>Stop 1</li>
+                    <li class="list-group-item"><span class="badge">30 min</span>Stop 2</li>
+                </ul>
+            </div>
+        </div>
+        <div class="map"></div>
     </div>
 </div>
 <div class="loading-page" ng-if="page=='loadingPage'">
