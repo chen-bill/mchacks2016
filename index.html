@@ -9,7 +9,11 @@
     <link rel="stylesheet" type="text/css" href="css/select.css">
     <link rel="stylesheet" type="text/css" href="css/loading.css">
     <link rel="stylesheet" type="text/css" href="css/ng-animation.css">
+<<<<<<< Updated upstream
     <link rel="stylesheet" type="text/css" href="css/result.css">
+=======
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+>>>>>>> Stashed changes
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:400,400italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
@@ -114,7 +118,8 @@
         </button>
     </div>
 </div>
-<div class="result-page slideTransition" ng-if="page=='resultPage'">
+
+<!-- <div class="result-page slideTransition" ng-if="page=='resultPage'">
     <div class="itinerary panel panel-default">
         <div class="panel-heading">
             <h3>Itinerary</h3>
@@ -131,8 +136,12 @@
             <button type="button" class="btn btn-default"><i class="fa fa-github"></i></button>
         </div>
     </div>
-    <div class="map" id="map-canvas"></div>
+    <div class="map" id="map-canvas"></div> -->
+
+<div class="result-page map" ng-show="page == 'resultPage'" id="map-canvas">
+
 </div>
+
 <div class="loading-page" ng-if="page=='loadingPage'">
     <div class="load-wrapper">
         <div class="load-cube c1"></div>
