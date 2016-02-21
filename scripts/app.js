@@ -71,6 +71,7 @@ angular.module('mainApp', ['ui.bootstrap'])
 					rating: attractionsArray[key].rating,
 					address: attractionsArray[key].address_obj,
 					ratingImage: attractionsArray[key].rating_image_url,
+					rankingData: attractionsArray[key].ranking_data,
 					selected: false
 				}
 			}
@@ -83,7 +84,8 @@ angular.module('mainApp', ['ui.bootstrap'])
 					longitude: restaurantsArray[key].longitude,
 					rating: restaurantsArray[key].rating,
 					address: restaurantsArray[key].address_obj,
-					ratingImage: restaurantsArray[key].rating_image_url,
+					ratingImage: restaurantsArray[key].rating_image_url, 
+					rankingData: restaurantsArray[key].ranking_data,
 					selected: false
 				}
 			}
@@ -97,6 +99,7 @@ angular.module('mainApp', ['ui.bootstrap'])
 					rating: hotelOptions[key].rating,
 					address: hotelOptions[key].address_obj,
 					ratingImage: hotelOptions[key].rating_image_url,
+					rankingData: hotelOptions[key].ranking_data,
 					selected: false
 				}
 			}

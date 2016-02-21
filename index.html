@@ -22,11 +22,11 @@
 </head>
 <body ng-controller="mainController">
 <div class="landing-page" ng-if="page == 'landingPage'">
-    <div class="row center-container">
+    <div class="row center-container" id="centerContainer">
         <h1>Insert Pun Here</h1>
+        
+        <input type="text" ng-model="asyncSelected" placeholder="Where are you going?" uib-typeahead="address for address in getLocation($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noResults" typeahead-on-select="onSelect($item, $model, $label)" class="form-control">
 
-
-        <input type="text" ng-model="asyncSelected" placeholder="Please enter your destination" uib-typeahead="address for address in getLocation($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noResults" typeahead-on-select="onSelect($item, $model, $label)" class="form-control">
         <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
         <div ng-show="noResults">
           <i class="glyphicon glyphicon-remove"></i> No Results Found
@@ -44,7 +44,7 @@
 <div class="select-page" ng-if="page == 'selectPage'">
     <div class="sidebar">
         <h3 id="destination-label">{{location}} Itinerary</h3>
-        <button class="btn btn-primary" ng-click="generateItinerary()">Generate Itinerary</button>
+        <button class="btn btn-primary" ng-click="generateItinerary()" ng-disabled="selectedEvents.length > 0 ? '' : 'disabled'">Generate Itinerary</button>
         <ul id="selected-list">
             <li ng-repeat="event in selectedEvents">{{event.name}}</li>
         </ul>
@@ -60,10 +60,10 @@
                 </div>
                 <div id="attractions-collapse" class="panel-collapse active collapse in">
                     <div class="list-group select-list" id="attractions-list">
-                        <a class="list-group-item" ng-repeat="attraction in loadedOptions.attractionsOptions" ng-click="addEvent(attraction)" ng-class="attraction.selected ? 'active':''"><img class="ratingImage" ng-src="{{attraction.ratingImage}}"/><h4>{{attraction.name}}
-                            <span src=""></span>
-                        </h4>
-                            <p>{{attraction.address.address_string}}</p>
+                        <a class="list-group-item" ng-repeat="attraction in loadedOptions.attractionsOptions" ng-click="addEvent(attraction)" ng-class="attraction.selected ? 'active':''"><img class="ratingImage" ng-src="{{attraction.ratingImage}}"/>
+                            <h4>{{attraction.name}}
+                            </h4>
+                            <p>{{attraction.rankingData.ranking_string}}</p>
                             </a>
                     </div>
                 </div>
@@ -77,8 +77,12 @@
                     </h4>
                 </div>
                 <div id="restaurant-collapse" class="panel-collapse collapse in">
-                    <div class="list-group" id="restaurant-list">
-                        <a class="list-group-item" ng-repeat="restaurant in loadedOptions.restaurantOptions" ng-click="">{{restaurant.name}}</a>
+                    <div class="list-group select-list" id="attractions-list">
+                        <a class="list-group-item" ng-repeat="restaurant in loadedOptions.restaurantOptions" ng-click="addEvent(restaurant)" ng-class="restaurant.selected ? 'active':''"><img class="ratingImage" ng-src="{{restaurant.ratingImage}}"/>
+                            <h4>{{restaurant.name}}
+                            </h4>
+                            <p>{{restaurant.rankingData.ranking_string}}</p>
+                            </a>
                     </div>
                 </div>
             </div>
