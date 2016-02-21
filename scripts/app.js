@@ -15,6 +15,10 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		restaurantOptions: {}
 	};
 	$scope.startLocationAddress = "";
+	
+	var startLocationData;
+	var endLocationData;
+
 	$scope.markersData = [];
 
 	function queryLocationByName(queriedLocation, callback){
@@ -33,7 +37,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		console.log(finalAddress);
 		$http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + finalAddress + '&key=' + googlePlacesApiKey)
 			.then(function(res){
-				console.log(res);
+				callback(res.data.results);
 			}, function(err){
 				console.log(err);
 			});
@@ -95,7 +99,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 			for(var key in restaurantsArray){
 				var newName = restaurantsArray[key].name.replace(/[^\w\s]/gi, '');
 				$scope.loadedOptions.restaurantOptions[newName] = {
-					name: restaurantsArray[key].name.replace(/[^\w\s]/gi, ''),
+					name: newName,
 					latitude: restaurantsArray[key].latitude,
 					longitude: restaurantsArray[key].longitude,
 					rating: restaurantsArray[key].rating,
@@ -110,7 +114,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 			for(var key in hotelOptions){
 				var newName = hotelOptions[key].name.replace(/[^\w\s]/gi, '');
 				$scope.loadedOptions.hotelOptions[newName] = {
-					name: hotelOptions[key].name.replace(/[^\w\s]/gi, ''),
+					name: newName,
 					latitude: hotelOptions[key].latitude,
 					longitude: hotelOptions[key].longitude,
 					rating: hotelOptions[key].rating,
@@ -124,7 +128,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	}
 
 
-	function generateRouteData(itinerary, callback) {
+	function generateRouteData(startLocation, itinerary, callback) {
 
 		if (itinerary.length == 0)
 			return null;
@@ -135,7 +139,6 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		}
 		for (var i = 0; i < itinerary.length; i++) {
 			var itineraryName = itinerary[i].name;
-			console.log(itineraryName);
 
 			result.visits[itineraryName] = {
 				"location": {
@@ -150,16 +153,16 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		result.fleet = {
 			"person1": {
 				"start_location": {
-					"id": "hotel",
-					"name": "insert address here",
-					"lat": itinerary[0].latitude,
-					"lng": itinerary[0].longitude
+					"id": "home",
+					"name": startLocation[0].formatted_address,
+					"lat": startLocation[0].geometry.location.lat,
+					"lng": startLocation[0].geometry.location.lng
 				},
 				"end_location": {
-					"id": "hotel",
-					"name": "insert address here",
-					"lat": itinerary[0].latitude,
-					"lng": itinerary[0].longitude
+					"id": "home",
+					"name": startLocation[0].formatted_address,
+					"lat": startLocation[0].geometry.location.lat,
+					"lng": startLocation[0].geometry.location.lng
 				},
 				"shift_start": "0:00",
 				"shift_end": "23:59"
@@ -172,7 +175,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	// generateRouteData(mockItinerary);
 
 	$scope.debug = function(){
-		console.log($scope.loadedOptions);
+
 	}
 
 	$scope.addEvent = function(event){
@@ -197,40 +200,56 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 	$scope.generateItinerary = function(){
 		$scope.page = 'resultPage';
-		queryLocationByAddress($scope.startLocationAddress);
-		generateRouteData($scope.selectedEvents, function(response){
-			var req = {
-				method: 'POST',
-				url: 'https://api.routific.com/v1/vrp',
-				headers: {
-				  	'Content-Type': 'application/json',
-				  	'Authorization': 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1MzEzZDZiYTNiMDBkMzA4MDA2ZTliOGEiLCJpYXQiOjEzOTM4MDkwODJ9.PR5qTHsqPogeIIe0NyH2oheaGR-SJXDsxPTcUQNq90E'
-				},
-				data: response
+
+		queryLocationByAddress($scope.startLocationAddress, function(startLocation){
+
+			startLocationData = {
+				"name": 'Start: ' + startLocation[0].formatted_address,
+				lat: parseFloat(startLocation[0].geometry.location.lat),
+				lng: parseFloat(startLocation[0].geometry.location.lng)
 			}
+
+			endLocationData = {
+				"name": 'End: ' + startLocation[0].formatted_address,
+				lat: parseFloat(startLocation[0].geometry.location.lat),
+				lng: parseFloat(startLocation[0].geometry.location.lng)
+			}
+
+			generateRouteData(startLocation, $scope.selectedEvents, function(response){
+				var req = {
+					method: 'POST',
+					url: 'https://api.routific.com/v1/vrp',
+					headers: {
+					  	'Content-Type': 'application/json',
+					  	'Authorization': 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1MzEzZDZiYTNiMDBkMzA4MDA2ZTliOGEiLCJpYXQiOjEzOTM4MDkwODJ9.PR5qTHsqPogeIIe0NyH2oheaGR-SJXDsxPTcUQNq90E'
+					},
+					data: response
+				}
 
 			$http(req).then(optimizationCallback, optimizationError);
 
-			function optimizationCallback(response){
-				configureOptimizedData(response.data.solution.person1, function(result){
-					for (var i = 0; i < result.length; i++) {
-						result[i] = {
-							lat: parseFloat(result[i].latitude),
-							lng: parseFloat(result[i].longitude),
-							name: result[i].name
+				function optimizationCallback(response){
+					configureOptimizedData(response.data.solution.person1, function(result){
+						for (var i = 0; i < result.length; i++) {
+							result[i] = {
+								lat: parseFloat(result[i].latitude),
+								lng: parseFloat(result[i].longitude),
+								name: result[i].name
+							};
 						};
-					};
-					$scope.markersData = result;
-					markersData = result;
-					initialize();
-				});
-			}
+						result.unshift(startLocationData);
+						result.push(endLocationData);
 
+						$scope.markersData = result;
+						initialize();
+					});
+				}
 
 				function optimizationError(error){
 					console.log('error in optimzation search: ' + JSON.stringify(error));
 				}
 			});
+		});
 	}
 
 	function configureOptimizedData (orderedData, callback){
@@ -292,7 +311,6 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 
 
 	function initialize() {
-		console.log("Init called");
 	   var mapOptions = {
 	      center: new google.maps.LatLng(40.601203,-8.668173),
 	      zoom: 5,
