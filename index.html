@@ -20,6 +20,8 @@
 	<script src="scripts/app.js"></script>
 	<script src="scripts/controllers.js"></script>
 	<script src="scripts/services.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="scripts/map.js"></script>
 </head>
 <body ng-controller="mainController">
 
@@ -120,6 +122,20 @@
             <li class="list-group-item"><span class="badge">2 hours</span>Stop 1</li>
             <li class="list-group-item"><span class="badge">30 min</span>Stop 2</li>
         </ul>
+<div class="result-page" ng-if="page=='resultPage'">
+    <div class="row">
+        <div class="itinerary panel panel-default">
+            <div class="panel-heading">
+                <h3>Itinerary</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="itinerary-list list-group">
+                    <li class="list-group-item"><span class="badge">2 hours</span>Stop 1</li>
+                    <li class="list-group-item"><span class="badge">30 min</span>Stop 2</li>
+                </ul>
+            </div>
+        </div>
+        <div class="map" id="map-canvas"></div>
     </div>
 </div>
 <div class="loading-page" ng-if="page=='loadingPage'">
