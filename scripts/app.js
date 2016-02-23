@@ -228,10 +228,10 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 				"name": 'Start: ' + startLocation[0].formatted_address,
 				latitude: parseFloat(startLocation[0].geometry.location.lat),
 				longitude: parseFloat(startLocation[0].geometry.location.lng)
-			}
-
+			}  
 
 			// phased out routific api so that it can still be used after api key expires
+			// no longer does optimization :(
 
 			// generateRouteData(startLocation, $scope.selectedEvents, function(response){
 			// 	var req = {
