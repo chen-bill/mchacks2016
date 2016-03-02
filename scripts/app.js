@@ -2,7 +2,7 @@
 
 angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 .controller('mainController', ['$scope', '$http', function($scope, $http){
-	var tripAdvisorApiKey = '4F99833E8FE6438E9F753AE4E0257653';
+	var tripAdvisorApiKey = '58d228cfafdb4eb1a1ad67010537778b';
 	var googlePlacesApiKey = 'AIzaSyAahHAcSl2j4Yc8ZlhfB85Od1g_NdBGzf8';
     var uberServerToken = '6YDZJ_ZzQzdVZLDasJBuAFTp0ulYus4ql8QSkFWw';
 	$scope.page = "landingPage";
@@ -242,7 +242,7 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 					url: 'https://api.routific.com/v1/vrp',
 					headers: {
 					  	'Content-Type': 'application/json',
-					  	'Authorization': 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1MzEzZDZiYTNiMDBkMzA4MDA2ZTliOGEiLCJpYXQiOjEzOTM4MDkwODJ9.PR5qTHsqPogeIIe0NyH2oheaGR-SJXDsxPTcUQNq90E'
+					  	'Authorization': 'bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1NmQ2NWZjYzUxYWQ2M2Y2MTBlYTIyYzYiLCJpYXQiOjE0NTY4ODk4MDR9.GqSUPl3lxWranUrFno6mQbAy6AzpnUaRrp6mdyNDcZ0'
 					},
 					data: response
 				}
