@@ -331,7 +331,30 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	    });
 	};
 
-// Bills attempt
+	$scope.changeCity = function() {
+		$scope.page = 'landingPage';
+	};
+
+	$scope.editItinerary = function() {
+		$scope.page = 'selectPage';
+	};
+
+
+
+
+
+
+	var map;
+	var infoWindow;
+	 var directionsService = new google.maps.DirectionsService();
+var request = {
+      
+        // destination: destination,
+        // waypoints: waypoints,
+        // travelMode: mode,
+        // optimizeWaypoints: true,
+        // avoidHighways: false
+    };
 
 	function initialize() {
 	    directionsDisplay = new google.maps.DirectionsRenderer();
