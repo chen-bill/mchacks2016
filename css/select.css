@@ -134,3 +134,11 @@
 #currentLocationForm input{
     margin-top: 10px;
 }
+
+.select-page .sidebar ul{
+    padding-left: 5px;
+}
+
+.select-page .dropdown-menu>li>a {
+    padding-left: 5px;
+}

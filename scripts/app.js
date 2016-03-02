@@ -299,6 +299,14 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 		$scope.markersData = [];
 	}
 
+	$scope.changeCity = function(){
+		$scope.page = "landingPage";
+		$scope.location = "";
+		$scope.loading = false;
+		$scope.startLocationAddress = "";
+		$scope.markersData = [];
+	}
+
 	var _selected;
 	$scope.getLocation = function(val) {
 	return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
