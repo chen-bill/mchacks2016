@@ -31,14 +31,14 @@ angular.module('mainApp', ['ui.bootstrap', 'ngAnimate'])
 	$scope.markersData = [];
 
 	function queryLocationByName(queriedLocation, callback){
-		$scope.loading = true;
-		$http.get('http://api.tripadvisor.com/api/partner/2.0/search/' + queriedLocation + '?key=' + tripAdvisorApiKey + '&categories=geos')
-			.then(function(res){
-				console.log(res);
-				callback(res.data.geos[0].location_id);
-			}, function(err){
-				console.log(err);
-			});
+		callback(155019);
+		// $scope.loading = true;
+		// $http.get('http://api.tripadvisor.com/api/partner/2.0/search/' + queriedLocation + '?key=' + tripAdvisorApiKey + '&categories=geos')
+		// 	.then(function(res){
+		// 		callback(res.data.geos[0].location_id);
+		// 	}, function(err){
+		// 		console.log(err);
+		// 	});
 	}
 
 	function queryLocationByAddress(address, callback){
